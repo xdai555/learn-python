@@ -117,7 +117,9 @@
 # c.func()    # in B
 # 所有的类都继承 object 类，object 中有 __init__ ，所以新建的类没有init也不报错，因为从父类object中找到了
 # class A(object):pass # == class A:pass
-
+# 多继承的查找算法：C3 算法
+# print(C.mro())  # [<class '__main__.C'>, <class '__main__.B'>, <class '__main__.A'>, <class 'object'>]
+# --------------------------------------------------------------
 # 方法和函数的去别：看是谁调用，用类名调用的叫函数；用对象名调用的叫方法
 # 判断方法 isinstance() type()
 # class A:
@@ -128,3 +130,58 @@
 # a = A()
 # print(a.func) # 方法 <bound method A.func of <__main__.A object at 0x011EFEF0>>
 # print(type(a.func)) # <class 'method'>
+# --------------------------------------------------------------
+
+# 抽象类（父类对子类的约束）
+# https://www.cnblogs.com/weihengblog/p/8528967.html
+# 抽象类是一个特殊的类，是一个开发规范，约束它的子类必须实现与他同名的方法。
+# 从设计角度来看，如果类是基于对象抽象来的，那么抽象类就是基于类抽象而来的。
+# 从实现角度来看，抽象类中有抽象方法，该类不能被实例化，只能被继承，且子类必须实现抽象方法。
+# 程序设计的归一化 做出一个抽象，规定一个兼容性接口，调用者无需关心实现细节，可以处理实现特定接口的所有对象。（接口类？）
+# 一个支付接口，规定一个接口，其他类都继承这个类，如果没有按要求实现，则报错
+# class Payment(object):
+#     def pay(self, name, money):
+#         raise NotImplementedError('请在子类中使用 pay 方法')
+#
+# class WechatPay(Payment):
+#     def pay(self, name , money):
+#         print(f'{name}通过微信支付了{money}块!')
+# class AliPay(Payment):
+#     def pay(self, name, money):
+#         print(f'{name}通过支付宝支付了{money}块!')
+# aaa = WechatPay()
+# aaa.pay('aaa',100)
+# bbb = AliPay()
+# bbb.pay('bbb',200)
+# 新增了苹果支付，如果不使用pay方法，则报错 NotImplementedError: 请在子类中使用 pay 方法
+# class ApplePay(Payment):
+#     # def fuqian(self,name,money):
+#     def pay(self, name, money):
+#         print(f'{name}通过苹果支付了{money}块!')
+# # # 归一化
+# def pay(type, name, money):
+#     if type == 'wx':
+#         obj = WechatPay()
+#     elif type == 'ali':
+#         obj = AliPay()
+#     # 新增了苹果支付
+#     elif type == 'apple':
+#         obj = ApplePay()
+#     obj.pay(name,money)
+#
+# pay('wx','aaa',100)
+# pay('ali','bbb',200)
+# pay('apple','ccc',300)
+
+# 实现抽象类的另一种方法，abc 模块
+# import abc
+# class Payment(metaclass=abc.ABCMeta):
+#     @abc.abstractmethod
+#     def pay(self, name, money):
+#         pass
+# class AliPay(Payment):
+#     def fuqian(self, name, money):
+#         print(f'{name}通过支付宝支付了{money}块!')
+# # 因为没有使用抽象类中的 pay 方法，无法实例化，
+# aaa = AliPay() # TypeError: Can't instantiate abstract class AliPay with abstract methods pay
+
