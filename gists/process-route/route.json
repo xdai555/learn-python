@@ -1,0 +1,4 @@
+{"type":"INTRA_VRF","dst_network":"1.0.1.0/24","next_hop_addr":"192.168.100.254","vrf_id":0}
+{"type":"INTRA_VRF","dst_network":"1.0.2.0/23","next_hop_addr":"192.168.100.254","vrf_id":0}
+{"type":"INTRA_VRF","dst_network":"1.4.32.0/19","next_hop_addr":"192.168.100.254","vrf_id":0}
+{"type":"INTRA_VRF","dst_network":"1.4.64.0/18","next_hop_addr":"192.168.100.254","vrf_id":0}
