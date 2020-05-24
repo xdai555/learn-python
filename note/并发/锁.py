@@ -3,6 +3,7 @@ from multiprocessing import Process
 import json
 import time
 
+
 # 当多个进程使用同一份数据资源的时候，就会引发数据安全或顺序混乱问题。
 # 抢票的例子，5个人买到了同一张票！
 def search(i):
@@ -45,3 +46,10 @@ if __name__ == '__main__':
     for i in range(5):
         p = Process(target=get_ticket,args=(i,lock))
         p.start()
+
+# 互斥锁，不能在同一个进程中连续acquire多次
+lock = Lock()
+lock.acquire()
+print(1)
+lock.acquire()  # 因为没有release，所以永远会阻塞住
+print(2)
