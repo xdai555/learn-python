@@ -76,3 +76,33 @@ if __name__ == '__main__':
         t = Thread(target=func)
         t.start()
     print(n)    # 1
+
+# 主线程结束后进程就会结束；主线程会等待子线程结束之后才结束
+# 守护线程会随着主线程的结束而结束，下面例子中，代码执行完成即为程序执行完成，所以第二个print未能输出
+def func():
+    while True:
+        print('in func')   # 会输出
+        time.sleep(1)
+        print('in func...')    # 不会输出，还没来得急输出，主进程就结束了
+t = Thread(target=func)
+t.daemon = True
+t.start()
+
+# 守护线程会在主线程的代码结束之后，继续守护其他子线程。
+# 其他子线程结束 --> 主线程结束 --> 主进程结束 --> 整个进程中所有资源都被回收 --> 守护线程也会被回收，守护线程结束
+# 下面例子中 func1 会输出3次
+def func1():
+    while True:
+        print('in func1')
+        time.sleep(1)
+def func2():
+    for i in range(3):
+        print('in func2')
+        time.sleep(1)
+t = Thread(target=func1)
+t.daemon = True
+t.start()
+Thread(target=func2).start()
+
+# !!! 进程是资源分配单位，子进程需要父进程来回收资源
+# 线程也是进程中的资源，所有的线程会随着进程的结束而被回收
