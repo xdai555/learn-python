@@ -71,7 +71,7 @@ def func():
 # time.sleep(3)       # 这两行代码执行结果正常
 
 
-# 协程用法
+# **基本用法**
 g_lis = []
 for _ in range(4):
     g = gevent.spawn(func)
