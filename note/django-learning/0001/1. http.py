@@ -21,8 +21,7 @@
 # 一般情况下，RFC 2616 中定义了常用状态的状态码，开发人员也可以自定义
 # 常见的相应代码 https://www.runoob.com/http/http-status-codes.html
 
-# # URL
-# 基本元素
+# # URL 基本元素
 # 协议
 # 层级URL标记符号
 # 访问资源所需凭证（可选）
@@ -60,3 +59,19 @@ while True:
 # Sec-Fetch-Dest: document
 # Accept-Encoding: gzip, deflate, br
 # Accept-Language: zh-CN,zh;q=0.9,en-US;q=0.8,en;q=0.7      --> 下方应当为请求数据
+
+# 请求格式 request
+# "请求方法 路径 HTTP/1.1
+# k1=v1
+# k2=v2
+# 
+# 
+# 请求体" --> get 请求没有请求体
+
+# 响应格式 response
+# "HTTP/1.1 状态码 状态描述符
+# k1=v1
+# k2=v2
+# 
+# 
+# 响应体（响应数据）"
