@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Publisher</title>
+    <title>Publishers</title>
 </head>
 <body>
 
@@ -14,10 +14,11 @@
     </tr>
     </thead>
     <tbody>
-    {% for i in all_publisher %}
+    {% for i in all_publishers %}
         <tr>
         <td>{{ forloop.counter }}</td>
-        <td>{{ i }}</td>
+{#        <td>{{ i.id }}</td>#}
+        <td>{{ i.name }}</td>
     </tr>
     {% endfor %}
     </tbody>
