@@ -19,5 +19,8 @@ from app01 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('publishers/', views.publishers)
+    path('publishers/', views.publishers),
+    path('publisher_add/', views.publisher_add),
+    path('publisher_del/', views.publisher_del),
+    path('publisher_update/', views.publisher_update),
 ]
