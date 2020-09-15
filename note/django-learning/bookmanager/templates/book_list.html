@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>ALL BOOK LIST</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://v3.bootcss.com/examples/dashboard/dashboard.css" rel="stylesheet">
+</head>
+<body>
+<table class="table table-hover">
+    <a class="btn btn-primary" href="/book_add/">+add</a>
+    <thead>
+    <tr>
+        <th>序号</th>
+        <th>ID</th>
+        <th>名称</th>
+        <th>出版社</th>
+        <th>操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for book in all_book %}
+    <tr>
+        <td>{{ forloop.counter }}</td>
+        <td>{{ book.pk }}</td>
+        <td>{{ book.name }}</td>
+        <td>{{ book.publisher.name }}</td>
+        <td>
+            <a class="btn btn-sm btn-danger" href="/book_del/?id={{ book.pk }}">delete</a>
+            <a class="btn btn-sm btn-primary" href="/book_update/?id={{ book.pk }}">update</a>
+        </td>
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+</body>
+</html>

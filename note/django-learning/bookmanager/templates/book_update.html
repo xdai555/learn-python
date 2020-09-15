@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Book update</title>
+</head>
+<body>
+<form action="" method="post">
+    <p>名称：<input type="text" name="book_name" value="{{ book.name }}"></p>
+
+    出版社：<select name="publisher_id" id="">
+    {% for publisher in all_publishers %}
+    {% if publisher == book.publisher %}
+        <option selected value="{{ publisher.pk }}">{{ publisher.name }}</option>
+    {% else %}
+        <option value="{{ publisher.pk }}">{{ publisher.name }}</option>
+    {% endif %}
+    {% endfor %}
+
+    </select>
+
+
+
+    <button>submit</button>
+</form>
+</body>
+</html>

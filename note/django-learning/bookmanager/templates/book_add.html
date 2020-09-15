@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BOOK ADD</title>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<center><h1 class="page-header">Book Add</h1></center>
+<form action="" method="post">
+    <center>Book:<input type="text" name="book_name"><span>{{ error }}</span></center>
+    <br>
+    <center>Publisher:
+        <select name="publisher_id" id="">
+        {% for publisher in all_publishers %}
+            <option value="{{ publisher.pk }}">{{ publisher.name }}</option>
+        {% endfor %}
+        </select></center>
+    <center><button class="btn-primary btn-sm">Submit</button></center>
+</form>
+</body>
+</html>
