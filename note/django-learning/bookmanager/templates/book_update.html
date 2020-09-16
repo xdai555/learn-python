@@ -10,15 +10,14 @@
 
     出版社：<select name="publisher_id" id="">
     {% for publisher in all_publishers %}
-    {% if publisher == book.publisher %}
-        <option selected value="{{ publisher.pk }}">{{ publisher.name }}</option>
-    {% else %}
-        <option value="{{ publisher.pk }}">{{ publisher.name }}</option>
-    {% endif %}
+        {% if publisher == book.publisher %}
+            <option selected value="{{ publisher.pk }}">{{ publisher.name }}</option>
+        {% else %}
+            <option value="{{ publisher.pk }}">{{ publisher.name }}</option>
+        {% endif %}
     {% endfor %}
 
-    </select>
-
+</select>
 
 
     <button>submit</button>

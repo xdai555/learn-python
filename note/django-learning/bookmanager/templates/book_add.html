@@ -12,11 +12,13 @@
     <br>
     <center>Publisher:
         <select name="publisher_id" id="">
-        {% for publisher in all_publishers %}
-            <option value="{{ publisher.pk }}">{{ publisher.name }}</option>
-        {% endfor %}
+            {% for publisher in all_publishers %}
+                <option value="{{ publisher.pk }}">{{ publisher.name }}</option>
+            {% endfor %}
         </select></center>
-    <center><button class="btn-primary btn-sm">Submit</button></center>
+    <center>
+        <button class="btn-primary btn-sm">Submit</button>
+    </center>
 </form>
 </body>
 </html>

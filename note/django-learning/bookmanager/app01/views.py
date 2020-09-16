@@ -1,5 +1,7 @@
-from django.shortcuts import render,redirect
+from django.shortcuts import render, redirect
 from app01 import models
+
+
 # Create your views here.
 
 
@@ -42,8 +44,8 @@ def publisher_update(request):
         return render(request, 'publisher_update.html', {'publisher': publisher})
     else:
         # POST 修改数据库中对应的数据，返回页面
-        publisher.name = request.POST.get('publisher_name')   # 只是在内存中修改了
-        publisher.save()    # 保存到数据库中
+        publisher.name = request.POST.get('publisher_name')  # 只是在内存中修改了
+        publisher.save()  # 保存到数据库中
         return redirect('/publishers/')
 
 
@@ -64,7 +66,7 @@ def book_list(request):
 #             return render(request, 'book_add.html', {'all_publishers': all_publishers, 'error': '输入不能为空'})
 #         if models.Book.objects.filter(name=book_name):
 #             return render(request, 'book_add.html', {'all_publishers': all_publishers, 'error': '已经存在此书籍'})
-#         # 可以通过反差外键，也可以直接加外键
+#         # 可以通过反查外键，也可以直接加外键
 #         # models.Book.objects.create(name=book_name, publisher=models.Publisher.objects.get(pk=publisher_id))
 #         models.Book.objects.create(name=book_name, publisher_id=publisher_id)
 #         return redirect('/all_book/')
@@ -116,3 +118,11 @@ def book_update(request):
     return render(request, 'book_update.html', {'all_publishers': all_publishers, 'book': book})
 
 
+def author_list(request):
+    all_authors = models.Author.objects.all()
+    for author in all_authors:
+        print(author)
+        print(author.id, author.name)
+        print(author.books, type(author.books))  # 关系管理对象，通过关系它再拿具体数据
+        print(author.books.all())  # 所关联的对象
+    return render(request, 'author_list.html', {"all_authors": all_authors})

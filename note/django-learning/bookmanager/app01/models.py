@@ -1,5 +1,6 @@
 from django.db import models
 
+
 # Create your models here.
 
 
@@ -15,5 +16,14 @@ class Book(models.Model):
     on_delete:
         models.CASCADE 级联删除
         models.PROTECT 保护，如果有数据不让删除
-        models.SET(value)   删除后设置为某个值（default,null等）
+        models.SET(value)   删除后设置为某个值
+        models.SET_DEFAULT   删除后设置为 default
+        models.SET_NULL   删除后设置为某个值 null
+        midels.DO_NOTHING 不受影响
     """
+    # authors = models.ManyToManyField("Author")
+
+
+class Author(models.Model):
+    name = models.CharField(max_length=32)
+    books = models.ManyToManyField("Book")  # 多对多的关系，不会在表中创建字段，而是新建第三张表来表示两者对应关系
