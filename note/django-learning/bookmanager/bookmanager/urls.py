@@ -28,4 +28,11 @@ urlpatterns = [
     path('book_del/', views.book_del),
     path('book_update/', views.book_update),
     path('all_author/', views.author_list),
+    path('author_add/', views.author_add),
+    path('author_update/', views.author_update),
+    path('author_del/', views.author_del),
+    path('temp_test/', views.temp_test),
+    path('get_json/', views.get_json),
+    path('upload/', views.Upload.as_view()),
+    path('test/', views.test),
 ]

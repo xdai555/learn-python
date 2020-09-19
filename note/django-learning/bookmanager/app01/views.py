@@ -1,10 +1,24 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, HttpResponse
 from app01 import models
-
 
 # Create your views here.
 
+# 统计时间的装饰器
+import time
+from django.utils.decorators import method_decorator
 
+
+def timer(func):  # 被装饰的函数
+    def inner(*args, **kwargs):  # 被装饰的函数的参数
+        start_time = time.time()
+        ret = func(*args, **kwargs)  # 执行被装饰的函数
+        print(f'执行的时间时{time.time() - start_time}')
+        return ret
+
+    return inner
+
+
+@timer
 def publishers(request):
     all_publishers = models.Publisher.objects.all().order_by('name')
     return render(request, 'publisher_list.html', {'all_publishers': all_publishers})
@@ -126,3 +140,83 @@ def author_list(request):
         print(author.books, type(author.books))  # 关系管理对象，通过关系它再拿具体数据
         print(author.books.all())  # 所关联的对象
     return render(request, 'author_list.html', {"all_authors": all_authors})
+
+
+def author_add(request):
+    if request.method == "POST":
+        author = request.POST.get("author_name")
+        book_ids = request.POST.getlist("book_id")  # 获取多个数据用 getlist
+        print(book_ids, type(book_ids))
+        # 向数据库插入作者信息
+        author_obj = models.Author.objects.create(name=author)
+        # 将作者和书籍进行关联，多对多
+        author_obj.books.set(book_ids)
+        return redirect('/all_author/')
+    # get
+    # 返回页面，包含form表单，用户输入作者姓名，选择书籍
+    all_books = models.Book.objects.all()
+    return render(request, 'author_add.html', {"all_books": all_books})
+
+
+def author_update(request):
+    pk = request.GET.get('id')
+    author = models.Author.objects.get(pk=pk)
+    all_books = models.Book.objects.all()
+    if request.method == 'POST':
+        author_name = request.POST.get('author_name')
+        author.name = author_name
+        author.save()
+        book_ids = request.POST.getlist('book_ids')
+        print(author_name, book_ids, type(book_ids))
+        author.books.set(book_ids)  # 重新设置对应关系
+        return redirect('/all_author/')
+    return render(request, 'author_update.html', {"author": author, "all_books": all_books})
+
+
+def author_del(request):
+    pk = request.GET.get("id")
+    models.Author.objects.filter(pk=pk).delete()
+    return redirect('/all_author/')
+
+
+def temp_test(request):
+    test_value = "test_value"
+    return render(request, 'temp_test.html', {"test_value": test_value})
+
+
+from django.http.response import JsonResponse
+
+
+def get_json(request):
+    data = {'k1': 'v1'}
+    data1 = ['v1', 'v2']
+    # return JsonResponse(data)
+    return JsonResponse(data1, safe=False)
+
+
+from django.views import View
+
+
+class Upload(View):
+    """
+    保存上传文件前，数据需要存放在某个位置。默认当上传文件小于2.5M时，django会将上传文件的全部内容读进内存。从内存读取一次，写磁盘一次。
+    但当上传文件很大时，django会把上传文件写到临时文件中，然后存放到系统临时文件夹中。
+    """
+
+    def get(self, request):
+        return render(request, 'upload.html')
+
+    def post(self, request):
+        # print(request.POST)
+        # print(request.FILES)
+        f1 = request.FILES.get('file1')
+        print(f1.name)
+        with open(f1.name, 'wb') as f:
+            # 从上传的文件对象中读取
+            for i in f1.chunks():
+                f.write(i)
+        return HttpResponse('上传成功')
+
+
+def test(request):
+    return render(request,'test.html')

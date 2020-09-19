@@ -49,7 +49,7 @@
             <h1 class="page-header">Author list</h1>
             <div class="table-responsive">
                 <table class="table table-hover">
-                    <a class="btn btn-primary btn-sm" href="/book_add/">+add</a>
+                    <a class="btn btn-primary btn-sm" href="/author_add/">+add</a>
                     <thead>
                     <tr>
                         <th>序号</th>
@@ -72,8 +72,8 @@
 
                             </td>
                             <td>
-                                <a class="btn btn-sm btn-primary" href="/book_update/?id={{ author.pk }}">update</a>
-                                <a class="btn btn-sm btn-danger" href="/book_del/?id={{ author.pk }}">delete</a>
+                                <a class="btn btn-sm btn-primary" href="/author_update/?id={{ author.pk }}">update</a>
+                                <a class="btn btn-sm btn-danger" href="/author_del/?id={{ author.pk }}">delete</a>
                             </td>
                         </tr>
                     {% endfor %}
