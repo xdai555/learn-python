@@ -64,8 +64,8 @@
                             <td>{{ i.id }}</td>
                             <td>{{ i.name }}</td>
                             <td>
-                                <a class="btn btn-primary btn-sm" href="/publisher_update/?id={{ i.id }}">update</a>
-                                <a class="btn btn-danger btn-sm" href="/publisher_del/?id={{ i.id }}">delete</a>
+                                <a class="btn btn-primary btn-sm" href="/publisher_update/{{ i.id }}">update</a>
+                                <a class="btn btn-danger btn-sm" href="{% url 'del' 'publisher' i.pk %}">delete</a>
                             </td>
                         </tr>
                     {% endfor %}

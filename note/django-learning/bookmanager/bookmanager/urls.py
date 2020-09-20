@@ -14,20 +14,21 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, re_path
 from app01 import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('publishers/', views.publishers),
+    path('publishers/', views.publishers,name='publishers'),
     path('publisher_add/', views.publisher_add),
     path('publisher_del/', views.publisher_del),
-    path('publisher_update/', views.publisher_update),
-    path('all_book/', views.book_list),
+    # path('publisher_update/', views.publisher_update),
+    re_path(r'publisher_update/(?P<pk>\d+)/', views.publisher_update),
+    path('all_book/', views.book_list,name='books'),
     path('book_add/', views.book_add),
     path('book_del/', views.book_del),
     path('book_update/', views.book_update),
-    path('all_author/', views.author_list),
+    path('all_author/', views.author_list,name='authors'),
     path('author_add/', views.author_add),
     path('author_update/', views.author_update),
     path('author_del/', views.author_del),
@@ -35,4 +36,5 @@ urlpatterns = [
     path('get_json/', views.get_json),
     path('upload/', views.Upload.as_view()),
     path('test/', views.test),
+    re_path(r'(?P<type>\w+)_del/(?P<pk>\d+)', views.delete,name='del'),
 ]

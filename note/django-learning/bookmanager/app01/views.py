@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect, HttpResponse
+from django.shortcuts import render, redirect, HttpResponse ,reverse
 from app01 import models
 
 # Create your views here.
@@ -50,9 +50,9 @@ def publisher_del(request):
     return redirect('/publishers/')
 
 
-def publisher_update(request):
+def publisher_update(request, pk):
     # GET 返回页面，包含原始数据
-    pk = request.GET.get('id')
+    # pk = request.GET.get('id')
     publisher = models.Publisher.objects.get(pk=pk)
     if request.method == 'GET':
         return render(request, 'publisher_update.html', {'publisher': publisher})
@@ -220,3 +220,12 @@ class Upload(View):
 
 def test(request):
     return render(request,'test.html')
+
+
+# 删除功能合一，通过url命名、反向路由和动态路由，类的反射 来实现
+def delete(request,type,pk):
+    print(type, pk)
+    request.GET.get('id')
+    cls = getattr(models,type.capitalize())
+    cls.objects.filter(pk=pk).delete()
+    return redirect(f'{type}s')
