@@ -1,5 +1,6 @@
-from django.shortcuts import render, redirect, HttpResponse ,reverse
+from django.shortcuts import render, redirect, HttpResponse, reverse
 from app01 import models
+from functools import wraps
 
 # Create your views here.
 
@@ -18,12 +19,26 @@ def timer(func):  # 被装饰的函数
     return inner
 
 
+def login_required(func):  # 参数传要装饰的函数
+    @wraps(func)
+    def inner(request, *args, **kwargs):  # 被装饰函数执行的参数
+        # 函数执行前的逻辑，判断是否登录
+        if request.COOKIES.get('is_login') != '1':
+            return redirect(f'/login/?url={request.path_info}')
+        ret = func(request, *args, **kwargs)
+        # 函数执行后
+        return ret
+
+    return inner
+
+
 @timer
 def publishers(request):
     all_publishers = models.Publisher.objects.all().order_by('name')
     return render(request, 'publisher_list.html', {'all_publishers': all_publishers})
 
 
+@login_required
 def publisher_add(request):
     if request.method == 'POST':
         # 1.用户提交 post 请求  2.获取用户提交的数据
@@ -41,6 +56,7 @@ def publisher_add(request):
     return render(request, 'publisher_add.html')
 
 
+@login_required
 def publisher_del(request):
     # 获取 ID
     pk = request.GET.get('id')
@@ -50,6 +66,7 @@ def publisher_del(request):
     return redirect('/publishers/')
 
 
+@login_required
 def publisher_update(request, pk):
     # GET 返回页面，包含原始数据
     # pk = request.GET.get('id')
@@ -87,6 +104,7 @@ def book_list(request):
 #     all_publishers = models.Publisher.objects.all().order_by('name')
 #     return render(request, 'book_add.html', {'all_publishers': all_publishers})
 # # # 优化版本
+@login_required
 def book_add(request):
     error = ''
     if request.method == 'POST':
@@ -103,6 +121,7 @@ def book_add(request):
     return render(request, 'book_add.html', {'all_publishers': all_publishers, 'error': error})
 
 
+@login_required
 def book_del(request):
     # 获取用户要删除的数据
     pk = request.GET.get('id')
@@ -112,6 +131,7 @@ def book_del(request):
     return redirect('/all_book/')
 
 
+@login_required
 def book_update(request):
     # 获取用户要修改的数据
     pk = request.GET.get('id')
@@ -142,6 +162,7 @@ def author_list(request):
     return render(request, 'author_list.html', {"all_authors": all_authors})
 
 
+@login_required
 def author_add(request):
     if request.method == "POST":
         author = request.POST.get("author_name")
@@ -158,6 +179,7 @@ def author_add(request):
     return render(request, 'author_add.html', {"all_books": all_books})
 
 
+@login_required
 def author_update(request):
     pk = request.GET.get('id')
     author = models.Author.objects.get(pk=pk)
@@ -173,6 +195,7 @@ def author_update(request):
     return render(request, 'author_update.html', {"author": author, "all_books": all_books})
 
 
+@login_required
 def author_del(request):
     pk = request.GET.get("id")
     models.Author.objects.filter(pk=pk).delete()
@@ -219,13 +242,32 @@ class Upload(View):
 
 
 def test(request):
-    return render(request,'test.html')
+    return render(request, 'test.html')
 
 
 # 删除功能合一，通过url命名、反向路由和动态路由，类的反射 来实现
-def delete(request,type,pk):
+@login_required
+def delete(request, type, pk):
     print(type, pk)
     request.GET.get('id')
-    cls = getattr(models,type.capitalize())
+    cls = getattr(models, type.capitalize())
     cls.objects.filter(pk=pk).delete()
     return redirect(f'{type}s')
+
+
+def login(request):
+    if request.method == 'POST':
+        user = request.POST.get('user')
+        pwd = request.POST.get('pwd')
+        if user == '123' and pwd == '123':
+            url = request.GET.get('url')
+            if url:
+                ret_url = url
+            else:
+                ret_url = reverse('publishers')
+            ret = redirect(ret_url)
+            ret.set_cookie('is_login', '1')
+            return ret
+        else:
+            error = '用户信息错误'
+    return render(request, 'login.html', locals())  # locals() 将函数里面的变量用字典的方式返回

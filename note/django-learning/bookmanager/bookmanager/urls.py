@@ -37,4 +37,5 @@ urlpatterns = [
     path('upload/', views.Upload.as_view()),
     path('test/', views.test),
     re_path(r'(?P<type>\w+)_del/(?P<pk>\d+)', views.delete,name='del'),
+    path('login/', views.login,name='login'),
 ]

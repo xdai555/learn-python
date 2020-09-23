@@ -7,6 +7,7 @@ django.setup()
 
 from app01 import models
 
+
 # 查询所有数据，QuerySet 对象列表
 ret = models.Publisher.objects.all()  # [<Publisher: 国家图书馆>, <Publisher: 图灵出版社>, <Publisher: 人民邮电出版社>]>
 # get 获取一个且唯一的数据，如果没有或者有多个，会报错 app01.models.DoesNotExist: Publisher matching query does not exist.
@@ -34,6 +35,8 @@ ret = models.Publisher.objects.all().first()
 ret = models.Publisher.objects.all().last()
 # 判断是否存在
 ret = models.Publisher.objects.filter(pk=7).exists()
+
+# 统计每一本书作者的个数
+from django.db.models import Count, Min, Max, Avg
+ret = models.Book.objects.annotate(Count('author')).values()
 print(ret)
-
-
