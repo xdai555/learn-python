@@ -38,4 +38,5 @@ urlpatterns = [
     path('test/', views.test),
     re_path(r'(?P<type>\w+)_del/(?P<pk>\d+)', views.delete,name='del'),
     path('login/', views.login,name='login'),
+    path('logout/', views.logout,name='logout'),
 ]

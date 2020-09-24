@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect, HttpResponse, reverse
 from app01 import models
 from functools import wraps
+from django.conf import global_settings
 
 # Create your views here.
 
@@ -23,7 +24,9 @@ def login_required(func):  # 参数传要装饰的函数
     @wraps(func)
     def inner(request, *args, **kwargs):  # 被装饰函数执行的参数
         # 函数执行前的逻辑，判断是否登录
-        if request.COOKIES.get('is_login') != '1':
+        # if request.COOKIES.get('is_login') != '1':
+        # if request.get_signed_cookie('is_login',salt='qwe') != '1':
+        if request.session.get('is_login') != 1:
             return redirect(f'/login/?url={request.path_info}')
         ret = func(request, *args, **kwargs)
         # 函数执行后
@@ -266,8 +269,17 @@ def login(request):
             else:
                 ret_url = reverse('publishers')
             ret = redirect(ret_url)
-            ret.set_cookie('is_login', '1')
+            # ret.set_cookie('is_login', '1')
+            # ret.set_signed_cookie('is_login', '1',salt='qwe')
+            request.session['is_login'] = 1
             return ret
         else:
             error = '用户信息错误'
     return render(request, 'login.html', locals())  # locals() 将函数里面的变量用字典的方式返回
+
+
+def logout(request):
+    ret = redirect('login')
+    # ret.delete_cookie('is_login')
+    request.session.delete()
+    return ret
