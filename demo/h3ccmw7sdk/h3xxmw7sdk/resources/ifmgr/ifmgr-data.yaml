@@ -1,0 +1,21 @@
+Ifmgr:
+    Interfaces: 
+        Interface: 
+            IfIndex: ""
+            Description: ""
+            AdminStatus: ""
+            ConfigSpeed: ""
+            ConfigDuplex: ""
+            LinkType: ""
+            PVID: ""
+            MAC: ""
+            PortLayer: ""
+            Loopback: ""
+            MDI: ""
+            ConfigMTU: ""
+            ConfigBandwidth: ""
+            Interval: ""
+            ForceUP: ""
+    TrafficStatistics: 
+        Interval:
+            Interval: ""

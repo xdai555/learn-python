@@ -1,0 +1,2413 @@
+<?xml version="1.0" encoding="gb2312" ?>
+<xs:schema targetNamespace="http://www.h3c.com/netconf/data:1.0"
+                  elementFormDefault="qualified"
+                  xmlns="http://www.h3c.com/netconf/data:1.0"
+                  xmlns:base="http://www.h3c.com/netconf/base:1.0" 
+                  xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import schemaLocation="basetype.xsd" namespace="http://www.h3c.com/netconf/base:1.0"></xs:import>
+    <!--Speed of interface-->
+  <xs:complexType name="IfmgrSpeed">
+    <xs:annotation>
+      <xs:documentation>
+                Speed of interface.
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:restriction base="base:UnsignedInteger32">
+        <xs:enumeration value="0"></xs:enumeration>
+        <xs:enumeration value="10000"></xs:enumeration>
+        <xs:enumeration value="100000"></xs:enumeration>
+        <xs:enumeration value="1000000"></xs:enumeration>
+        <xs:enumeration value="2000000"></xs:enumeration>
+        <xs:enumeration value="2500000"></xs:enumeration>
+        <xs:enumeration value="4000000"></xs:enumeration>
+        <xs:enumeration value="8000000"></xs:enumeration>
+        <xs:enumeration value="10000000"></xs:enumeration>
+        <xs:enumeration value="40000000"></xs:enumeration>
+        <xs:enumeration value="100000000"></xs:enumeration>
+      </xs:restriction>
+    </xs:simpleContent>
+  </xs:complexType>
+
+  <!--Duplex of interface-->
+  <xs:complexType name="IfmgrDuplex">
+    <xs:annotation>
+      <xs:documentation>
+                Duplex of interface as follows:
+                1(FULL);
+                2(HALF);
+                3(AUTO)) (optional for ethernet interface)
+      </xs:documentation>
+    </xs:annotation>
+    <xs:simpleContent>
+      <xs:restriction base="base:UnsignedInteger32">
+        <xs:enumeration value="1"></xs:enumeration>
+        <xs:enumeration value="2"></xs:enumeration>
+        <xs:enumeration value="3"></xs:enumeration>
+      </xs:restriction>
+    </xs:simpleContent>
+  </xs:complexType>
+  
+  <xs:element name="Ifmgr">
+    <xs:complexType>
+      <xs:choice maxOccurs="unbounded">
+        <xs:element name="Interfaces" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>This table contains basic interface information.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="IfIndex"  minOccurs="0"  type="base:NameAndIndexUnion" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Interface index as table index.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Name" minOccurs="0" type="base:InterfaceName" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Full name of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="AbbreviatedName" minOccurs="0" type="base:InterfaceName" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Abbreviated name of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PortIndex" minOccurs="0" type="base:UnsignedShort" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Port index.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="ifTypeExt" minOccurs="0" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Interface extension type. Numerical value must be in range(0..128).)</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:maxInclusive value="128"></xs:maxInclusive>
+                            <xs:minInclusive value="0"></xs:minInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ifType" minOccurs="0" type="base:UnsignedInteger32" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Interface type, according to rfc 2233 MIB</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Description" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Interface description.String length constraints must be in range(0..255).</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:Text">
+                            <xs:minLength value ="0"></xs:minLength>
+                            <xs:maxLength value="255"></xs:maxLength>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="AdminStatus" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>
+                          Interface administration status,as follows:
+                          1 Admin Up
+                          2 Admin Down
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:Integer32">
+                            <xs:minInclusive value="1"></xs:minInclusive>
+                            <xs:maxInclusive value="2"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="OperStatus" minOccurs="0"  nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>
+                          Interface operation status as follows:
+                          1: up
+                          2: down
+                          3: testing
+                          4: unknown
+                          5: dormant
+                          6: notPresent
+                          7: lowerLayerDown
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:minInclusive value="1"></xs:minInclusive>
+                            <xs:maxInclusive value="7"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ConfigSpeed" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>
+                          Configured speed of an interface. Each bit represents a  speed as follows:
+                          1:Auto
+                          2:10Mbps
+                          4:100Mbps
+                          8:155Mbps
+                          16:622Mbps
+                          32:1Gbps
+                          64:2Gbps
+                          128:2.5Gbps
+                          256:4Gbps
+                          512:8Gbps
+                          1024:10Gbps
+                          2048:16Gbps
+                          4096:20Gbps
+                          8192:40Gbps
+                          16384:100Gbps
+                          32768:5Gbps
+                          65536:25Gbps
+                          131072:32Gbps)
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                       <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:minInclusive value="0"></xs:minInclusive>
+                            <xs:maxInclusive value="262143"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ActualSpeed" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Actual speed of an interface(units: kbps).</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="ConfigDuplex" minOccurs="0" nillable="true" type="IfmgrDuplex" >
+                      <xs:annotation>
+                        <xs:documentation>Configured duplex mode of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="ActualDuplex" minOccurs="0" nillable="true" type="IfmgrDuplex" >
+                      <xs:annotation>
+                        <xs:documentation>Actual duplex mode of an interface</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="LinkType" minOccurs="0" nillable="true" >
+                      <xs:complexType >
+                        <xs:annotation>
+                          <xs:documentation>
+                            VLAN type of an interface as follows:
+                            1 ACCESS
+                            2 TRUNK
+                            3 HYBRID
+                          </xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:enumeration value="1"></xs:enumeration>
+                            <xs:enumeration value="2"></xs:enumeration>
+                            <xs:enumeration value="3"></xs:enumeration>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PVID" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Port VLAN identification (PVID) of an interface.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:minInclusive value="1"></xs:minInclusive>
+                            <xs:maxInclusive value="4094"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="InetAddressIPV4" minOccurs="0" type="base:Ipv4Address" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Primary IPv4 address of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InetAddressIPV4Mask" minOccurs="0" type="base:Ipv4Address" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Primary IPv4 address mask of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PhysicalIndex" minOccurs="0" type="base:UnsignedInteger32" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Entity index of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MAC" minOccurs="0" type="base:MacAddress" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>MAC address of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="PortLayer" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>
+                          Port layer of an interface as follows:
+                          1 Layer 2
+                          2 Layer 3
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:enumeration value="1"></xs:enumeration>
+                            <xs:enumeration value="2"></xs:enumeration>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element  name="ForwardingAttributes" minOccurs="0" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Forwarding attributes of an interface.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                       <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:minInclusive value="0"></xs:minInclusive>
+                            <xs:maxInclusive value="63"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Loopback" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>
+                          Loopback test as follows:
+                          0 No loopback
+                          1 Internal
+                          2 External
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:enumeration value="0"></xs:enumeration>
+                            <xs:enumeration value="1"></xs:enumeration>
+                            <xs:enumeration value="2"></xs:enumeration>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="MDI" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>
+                          MDI mode of an interface as follows:
+                          1 MDI-II (straight-through cable)
+                          2 MDI-X (crossover cable)
+                          3 MDI-AUTO (auto-sensing)
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:enumeration value="1"></xs:enumeration>
+                            <xs:enumeration value="2"></xs:enumeration>
+                            <xs:enumeration value="3"></xs:enumeration>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ConfigMTU" minOccurs="0" type="base:UnsignedInteger32" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Configured MTU of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="ActualMTU" minOccurs="0" type="base:UnsignedInteger32" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Actual MTU of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="ConfigBandwidth" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Configured bandwidth of an interface(units: kbit/s).</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:minInclusive value="1"></xs:minInclusive>
+                            <xs:maxInclusive value="400000000"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ActualBandwidth" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Actual bandwidth of an interface(units: kbit/s)</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="SubPort" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                          <xs:documentation>Whether the port is sub-interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Interval" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Sampling interval of an interface</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:minInclusive value="5"></xs:minInclusive>
+                            <xs:maxInclusive value="300"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="ForceUP" minOccurs="0" type="base:Boolean" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Forcibly bring up an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Actual64Bandwidth" minOccurs="0"  type="base:UnsignedInteger64" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Actual bandwidth of an interface(units: kbit/s)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="TrafficStatisticsEnable" minOccurs="0" type="base:EnableState" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>
+                          TrafficStatistics Status of the port:
+                          enable
+                          disable
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Statistics" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>This table contains interface statistics.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="IfIndex" minOccurs="0" type="base:NameAndIndexUnion" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Interface index as table index.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Name" minOccurs="0" type="base:InterfaceName"  nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Full name of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="AbbreviatedName" minOccurs="0" type="base:InterfaceName"  nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Abbreviated name of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>                    
+                    <xs:element name="InOctets" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InUcastPkts" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound unicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InNUcastPkts" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound non-unicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InDiscards" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of discarded inbound packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InErrors" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of errored inbound packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InUnknownProtos" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of unsupported and unknown inbound packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InRate" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Rate of inbound bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutOctets" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutUcastPkts" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound unicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutNUcastPkts" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound non-unicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutDiscards" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of discarded outbound packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutErrors" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of errored outbound packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutRate" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Rate of outbound bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="LastClear" minOccurs="0" type="base:DateTime" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Local time when the statistics on an interface were cleared most recently.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TrafficStatistics" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Local time when the statistics on an interface were cleared most recently.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Interval" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>This table contains traffic statistics interval information.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="Configurable" type="base:Boolean" nillable="true" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Whether the sampling interval for all interface can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Interval" type="base:UnsignedInteger32" nillable="true" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Sampling interval of all interface(units: second)</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Interfaces" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>This table contains basic interface information.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:choice maxOccurs="unbounded">
+                    <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="IfIndex" minOccurs="0" type="base:NameAndIndexUnion" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Interface index as table index.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="Name" minOccurs="0" type="base:InterfaceName" nillable="true" >
+                            <xs:annotation>
+                              <xs:documentation>Full name of an interface.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="Interval" minOccurs="0"  type="base:UnsignedInteger32" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Sampling interval of all interfaces, in seconds.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="InPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Number of inbound packets during a specific period.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="OutPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Number of outbound packets during a specific period.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="InOctets" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Number of inbound bytes during a specific period.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="OutOctets" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Number of outbound bytes during a specific period.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="InBits" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Number of inbound bits during a specific period.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="OutBits" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Number of outbound bits during a specific period.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:all>
+                      <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
+                <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:NodeAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="Ports" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>This table contains port information.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Port" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="PortIndex" minOccurs="0" type="base:UnsignedShort" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Port index as table index.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Name" minOccurs="0" type="base:InterfaceName" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Full name of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="IfIndex" minOccurs="0" type="base:NameAndIndexUnion" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Interface index</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="InterfaceCapabilities" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>This table contains port capability information.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="IfIndex" minOccurs="0" type="base:NameAndIndexUnion" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Interface index as table index.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Configurable" minOccurs="0" type="base:Boolean" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Whether the interface is configurable.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Shutdown" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>
+                          Whether the interface can be shutdown manually.
+                        </xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Speed" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>
+                          Mode s of speed which can be configured.Each bit represents a  speed as follows:
+                          1:AuTo
+                          2:10Mbps
+                          4:100Mbps
+                          8:155Mbps
+                          16:622Mbps
+                          32:1Gbps
+                          64:2Gbps
+                          128:2.5Gbps
+                          256:4Gbps
+                          512:8Gbps
+                          1024:10Gbps
+                          2048:16Gbps
+                          4096:20Gbps
+                          8192:40Gbps
+                          16384:100Gbps
+                          32768:5Gbps
+                          65536:25Gbps
+                          131072:32Gbps)
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:minInclusive value="0"></xs:minInclusive>
+                            <xs:maxInclusive value="262143"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="AutoSpeed" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Modes of auto-negotiation speed which can be configured.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:minInclusive value="0"></xs:minInclusive>
+                            <xs:maxInclusive value="7"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Duplex" minOccurs="0"  nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Modes of duplex which can be configured.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:minInclusive value="0"></xs:minInclusive>
+                            <xs:maxInclusive value="7"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="PortLayer" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Whether the port layer can be changed.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Loopback" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Whether the loopback test can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MDI" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Types of MDI which can be configured.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:minInclusive value="0"></xs:minInclusive>
+                            <xs:maxInclusive value="7"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Bandwidth" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Whether the bandwidth can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MinMTU" minOccurs="0" type="base:UnsignedInteger32" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>The minimum MTU which can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MaxMTU" minOccurs="0" type="base:UnsignedInteger32" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>The maximum MTU which can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MinSubNum" minOccurs="0" type="base:UnsignedInteger32" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Minimum sub-interface number.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MaxSubNum" minOccurs="0" type="base:UnsignedInteger32" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Maximum sub-interface number.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MaxCreateSubNum" minOccurs="0" type="base:UnsignedInteger32" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>The total numbers of sub-interface which can be created.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="ContextAllocType" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>The allocation type of an interface for CONTEXT.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:minInclusive value="0"></xs:minInclusive>
+                            <xs:maxInclusive value="3"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="Removable" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                         <xs:documentation>Whether the interface can be deleted.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Interval" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Whether the sampling interval can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="ForceUP" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Whether port force up can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="LoopbackAutoStop" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Whether the loopback detection can be auto stop.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MAC" minOccurs="0" type="base:Boolean"  nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Whether MAC can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+					<xs:element name="IfName" minOccurs="0" type="base:InterfaceName"  nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Full name of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="TypeCapabilities" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>This table contains interface type capability information.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Capability" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="IfTypeExt" minOccurs="0" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Interface Type.Numerical value must be in range(0..128)</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:maxInclusive value="128"></xs:maxInclusive>
+                            <xs:minInclusive value="0"></xs:minInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="MinNum" minOccurs="0" type="base:UnsignedShort" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Minimum interface number.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MaxNum" minOccurs="0" type="base:UnsignedShort" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Maximum interface number.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MinSubNum" minOccurs="0" type="base:UnsignedShort" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Minimum sub-interface number.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MaxSubNum" minOccurs="0" type="base:UnsignedShort" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Maximum sub-interface number.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MaxCreateNum" minOccurs="0" type="base:UnsignedShort" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Total interface numbers which can be created.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MaxCreateSubNum" minOccurs="0" type="base:UnsignedShort" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Total sub-interface numbers which can be created.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MAC" minOccurs="0" type="base:Boolean"  nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Check whether a MAC address can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="EthInterfaces" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>This table contains ethernet interface information.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="IfIndex" minOccurs="0" type="base:NameAndIndexUnion" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Interface index</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Combo" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Combo mode of an interface(1(fiber mode); 2(copper mode); 3(auto mode))</xs:documentation>                 
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:enumeration value="1"></xs:enumeration>
+                            <xs:enumeration value="2"></xs:enumeration>
+                            <xs:enumeration value="3"></xs:enumeration>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="FlowControl" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>
+                          Flow control information of an interface
+                          1(Enable flow control)
+                          2(Disable)
+                          3(Only enable flow control packet receiving)
+                        </xs:documentation>                 
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:enumeration value="1"></xs:enumeration>
+                            <xs:enumeration value="2"></xs:enumeration>
+                            <xs:enumeration value="3"></xs:enumeration>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="AutoPowerDown" minOccurs="0" type="base:Boolean" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Port auto power down</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Jumboframe" minOccurs="0" type="base:UnsignedInteger32" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Jumbo frame information of an interface</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="BroadcastSuppression" nillable="true" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Broadcast suppression information of an interface</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="ConfigValue" type="base:UnsignedInteger32" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>
+                                Configured broadcast suppression value of an interface
+                                Value range:
+                                ratio: 0 to 100
+                                pps: 0 to 1.4881 × the maximum interface rate.
+                                kbps: 0 to the maximum interface rate
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="ActualValue" type="base:UnsignedInteger32" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>
+                                Actual broadcast suppression value of an interface
+                                Value range:
+                                ratio: 0 to 100
+                                pps: 0 to 1.4881 × the maximum interface rate.
+                                kbps: 0 to the maximum interface rate
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="Unit" minOccurs="0" nillable="true" >
+                            <xs:annotation>
+                              <xs:documentation>Broadcast suppression unit:1(ratio),2(pps),3(kbps)</xs:documentation>                 
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:restriction base="base:UnsignedInteger32">
+                                  <xs:enumeration value="1"></xs:enumeration>
+                                  <xs:enumeration value="2"></xs:enumeration>
+                                  <xs:enumeration value="3"></xs:enumeration>
+                                </xs:restriction>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="MulticastSuppression" nillable="true" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Multicast suppression information of an interface</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="ConfigValue" type="base:UnsignedInteger32" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>
+                                Configured multicast suppression value of an interface
+                                Value range:
+                                ratio: 0 to 100
+                                pps: 0 to 1.4881 × the maximum interface rate.
+                                kbps: 0 to the maximum interface rate
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="ActualValue" type="base:UnsignedInteger32" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>
+                                Actual multicast suppression value of an interface
+                                Value range:
+                                ratio: 0 to 100
+                                pps: 0 to 1.4881 × the maximum interface rate.
+                                kbps: 0 to the maximum interface rate
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="Unit" minOccurs="0" nillable="true" >
+                            <xs:annotation>
+                              <xs:documentation>Multicast suppression unit:1(ratio),2(pps),3(kbps)</xs:documentation>                 
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:restriction base="base:UnsignedInteger32">
+                                  <xs:enumeration value="1"></xs:enumeration>
+                                  <xs:enumeration value="2"></xs:enumeration>
+                                  <xs:enumeration value="3"></xs:enumeration>
+                                </xs:restriction>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="Flag" minOccurs="0" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Multicast suppression flag:1(all),2(unknown)</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:restriction base="base:UnsignedInteger32">
+                                  <xs:enumeration value="1"></xs:enumeration>
+                                  <xs:enumeration value="2"></xs:enumeration>
+                                </xs:restriction>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="UnknownUnicastSuppression" nillable="true" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>UnknownUnicast suppression information of an interface</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="ConfigValue" type="base:UnsignedInteger32" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>
+                                Configured unknownUnicastUnit suppression value of an interface
+                                Value range:
+                                ratio: 0 to 100
+                                pps: 0 to 1.4881 × the maximum interface rate.
+                                kbps: 0 to the maximum interface rate
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="ActualValue" type="base:UnsignedInteger32" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>
+                                Actual unknownUnicastUnit suppression value of an interface
+                                Value range:
+                                ratio: 0 to 100
+                                pps: 0 to 1.4881 × the maximum interface rate.
+                                kbps: 0 to the maximum interface rate
+                              </xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="Unit" minOccurs="0" nillable="true" >
+                            <xs:annotation>
+                              <xs:documentation>UnknownUnicastUnit suppression unit:1(ratio),2(pps),3(kbps)</xs:documentation>                 
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:restriction base="base:UnsignedInteger32">
+                                  <xs:enumeration value="1"></xs:enumeration>
+                                  <xs:enumeration value="2"></xs:enumeration>
+                                  <xs:enumeration value="3"></xs:enumeration>
+                                </xs:restriction>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                        </xs:all>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="BPDUDrop" minOccurs="0" type="base:Boolean" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Whether any type of IEEE BPDUs is drop on the port.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="EEE" minOccurs="0" type="base:Boolean" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Whether energy efficient Ethernet is enable on the port.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="ConnectMode" minOccurs="0" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>
+                          Port connection mode of an interface.
+                          Enumeration:
+                          1(Normal connection mode)
+                          2(Extend connection mode)
+                        </xs:documentation>   
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                             <xs:enumeration value="1"></xs:enumeration>
+                             <xs:enumeration value="2"></xs:enumeration>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+					<xs:element name="IfName" minOccurs="0" type="base:InterfaceName"  nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Full name of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="EthInterfaceCapabilities" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>The capabilities of Ethernet interface</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>The name of Row</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="IfIndex" minOccurs="0" type="base:NameAndIndexUnion" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Interface index.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Combo" minOccurs="0" type="base:Boolean" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Whether the fiber mode or copper mode can be activated.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="StormConstrain" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Whether storm constrain can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="FlowControl" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Whether flow control can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="AutoPowerDown" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Whether auto power down can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MinJumboframe" minOccurs="0" type="base:UnsignedInteger32" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>The minimum jumbofame which can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="MaxJumboframe" minOccurs="0" type="base:UnsignedInteger32" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>The maximum jumbofame which can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="BPDUDrop" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Whether bpdu drop can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="EEE" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Whether energy efficient ethernet can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="ConnectMode" minOccurs="0" type="base:Boolean" nillable="true" >
+                      <xs:annotation>
+                        <xs:documentation>Whether port connection mode can be configured.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+					<xs:element name="IfName" minOccurs="0" type="base:InterfaceName"  nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Full name of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="StormConstrain" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Storm Constrain sub module</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Interfaces" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>This table contains interface storm constrain information.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:choice maxOccurs="unbounded">
+                    <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                      <xs:annotation>
+                        <xs:documentation>The Name of Row</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="IfIndex" minOccurs="0" type="base:NameAndIndexUnion" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Interface index</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="CtlMode" minOccurs="0" nillable="true" >
+                            <xs:annotation>
+                              <xs:documentation>
+                                Storm constrain protective action
+                                Enumeration:
+                                0(N/A)
+                                1(Block)
+                                2(Shutdown)
+                              </xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:restriction base="base:UnsignedInteger32">
+                                  <xs:enumeration value="0"></xs:enumeration>
+                                  <xs:enumeration value="1"></xs:enumeration>
+                                  <xs:enumeration value="2"></xs:enumeration>
+                                </xs:restriction>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="Trap" minOccurs="0" type="base:Boolean" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Event trap switch</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="Log" minOccurs="0" type="base:Boolean" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Event log switch</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="Broadcast" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Broadcast storm constrain information of an interface</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="Upper" nillable="true" minOccurs="0">
+                                  <xs:annotation>
+                                    <xs:documentation>Broadcast upper threshold value</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:minInclusive value="1"/>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Lower" nillable="true" minOccurs="0">
+                                  <xs:annotation>
+                                    <xs:documentation>Broadcast lower threshold value</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:minInclusive value="1"/>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Unit" minOccurs="0" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>Broadcast threshold unit:1(pps),2(ratio),3(kbps)</xs:documentation>                 
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:enumeration value="1"></xs:enumeration>
+                                        <xs:enumeration value="2"></xs:enumeration>
+                                        <xs:enumeration value="3"></xs:enumeration>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Forward" minOccurs="0" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>
+                                      Broadcast traffic forwarding status
+                                      Enumeration:
+                                      0(Forwarding)
+                                      1(Block)
+                                      2(Shutdown)
+                                    </xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:enumeration value="0"></xs:enumeration>
+                                        <xs:enumeration value="1"></xs:enumeration>
+                                        <xs:enumeration value="2"></xs:enumeration>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="SwitchNum" minOccurs="0" type="base:UnsignedInteger32" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>Number of broadcast traffic forwarding state changes</xs:documentation>                 
+                                  </xs:annotation>
+                                </xs:element>
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="Multicast" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Multicast storm constrain information of an interface</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="Upper" nillable="true" minOccurs="0">
+                                  <xs:annotation>
+                                    <xs:documentation>Multicast upper threshold value</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:minInclusive value="1"/>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Lower" nillable="true" minOccurs="0">
+                                  <xs:annotation>
+                                    <xs:documentation>Multicast lower threshold value</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:minInclusive value="1"/>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Unit" minOccurs="0" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>Multicast threshold unit:1(pps),2(ratio),3(kbps)</xs:documentation>                 
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:enumeration value="1"></xs:enumeration>
+                                        <xs:enumeration value="2"></xs:enumeration>
+                                        <xs:enumeration value="3"></xs:enumeration>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Forward" minOccurs="0" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>
+                                      Multicast traffic forwarding status
+                                      Enumeration:
+                                      0(Forwarding)
+                                      1(Block)
+                                      2(Shutdown)
+                                    </xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:enumeration value="0"></xs:enumeration>
+                                        <xs:enumeration value="1"></xs:enumeration>
+                                        <xs:enumeration value="2"></xs:enumeration>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="SwitchNum" minOccurs="0" type="base:UnsignedInteger32" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>Number of multicast traffic forwarding state changes</xs:documentation>                 
+                                  </xs:annotation>
+                                </xs:element>
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="UnknownUnicast" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Unknown-unicast storm constrain information of an interface</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="Upper" nillable="true" minOccurs="0">
+                                  <xs:annotation>
+                                    <xs:documentation>Unknown-unicast upper threshold value</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:minInclusive value="1"/>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Lower" nillable="true" minOccurs="0">
+                                  <xs:annotation>
+                                    <xs:documentation>Unknown-unicast lower threshold value</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:minInclusive value="1"/>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Unit" minOccurs="0" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>Unknown-unicast threshold unit:1(pps),2(ratio),3(kbps)</xs:documentation>                 
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:enumeration value="1"></xs:enumeration>
+                                        <xs:enumeration value="2"></xs:enumeration>
+                                        <xs:enumeration value="3"></xs:enumeration>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Forward" minOccurs="0" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>
+                                      Unknown-unicast traffic forwarding status
+                                        Enumeration:
+                                        0(Forwarding)
+                                        1(Block)
+                                        2(Shutdown)
+                                    </xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:enumeration value="0"></xs:enumeration>
+                                        <xs:enumeration value="1"></xs:enumeration>
+                                        <xs:enumeration value="2"></xs:enumeration>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="SwitchNum" minOccurs="0" type="base:UnsignedInteger32" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>Number of Unknown-unicast traffic forwarding state changes</xs:documentation>                 
+                                  </xs:annotation>
+                                </xs:element>
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="KnownUnicast" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Known-unicast storm constrain information of an interface</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="Upper" nillable="true" minOccurs="0">
+                                  <xs:annotation>
+                                    <xs:documentation>Known-unicast upper threshold value</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:minInclusive value="1"/>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Lower" nillable="true" minOccurs="0">
+                                  <xs:annotation>
+                                    <xs:documentation>Known-unicast lower threshold value</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:minInclusive value="1"/>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Unit" minOccurs="0" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>Known-unicast threshold unit:1(pps),2(ratio),3(kbps)</xs:documentation>                 
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:enumeration value="1"></xs:enumeration>
+                                        <xs:enumeration value="2"></xs:enumeration>
+                                        <xs:enumeration value="3"></xs:enumeration>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Forward" minOccurs="0" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>
+                                      Known-unicast traffic forwarding status
+                                        Enumeration:
+                                        0(Forwarding)
+                                        1(Block)
+                                        2(Shutdown)
+                                    </xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:enumeration value="0"></xs:enumeration>
+                                        <xs:enumeration value="1"></xs:enumeration>
+                                        <xs:enumeration value="2"></xs:enumeration>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="SwitchNum" minOccurs="0" type="base:UnsignedInteger32" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>Number of Known-unicast traffic forwarding state changes</xs:documentation>                 
+                                  </xs:annotation>
+                                </xs:element>
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="UnknownUnitcast" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Unknown-unitcast storm constrain information of an interface</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="Upper" nillable="true" minOccurs="0">
+                                  <xs:annotation>
+                                    <xs:documentation>Unknown-unitcast upper threshold value</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:minInclusive value="1"/>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Lower" nillable="true" minOccurs="0">
+                                  <xs:annotation>
+                                    <xs:documentation>Unknown-unitcast lower threshold value</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:minInclusive value="1"/>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Unit" minOccurs="0" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>Unknown-unitcast threshold unit:1(pps),2(ratio),3(kbps)</xs:documentation>                 
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:enumeration value="1"></xs:enumeration>
+                                        <xs:enumeration value="2"></xs:enumeration>
+                                        <xs:enumeration value="3"></xs:enumeration>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Forward" minOccurs="0" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>
+                                      Unknown-unitcast traffic forwarding status
+                                        Enumeration:
+                                        0(Forwarding)
+                                        1(Block)
+                                        2(Shutdown)
+                                    </xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:enumeration value="0"></xs:enumeration>
+                                        <xs:enumeration value="1"></xs:enumeration>
+                                        <xs:enumeration value="2"></xs:enumeration>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="SwitchNum" minOccurs="0" type="base:UnsignedInteger32" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>Number of Unknown-unitcast traffic forwarding state changes</xs:documentation>                 
+                                  </xs:annotation>
+                                </xs:element>
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+                          <xs:element name="KnownUnitcast" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Known-unitcast storm constrain information of an interface</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:all>
+                                <xs:element name="Upper" nillable="true" minOccurs="0">
+                                  <xs:annotation>
+                                    <xs:documentation>Known-unitcast upper threshold value</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:minInclusive value="1"/>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Lower" nillable="true" minOccurs="0">
+                                  <xs:annotation>
+                                    <xs:documentation>Known-unitcast lower threshold value</xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:minInclusive value="1"/>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Unit" minOccurs="0" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>Known-unitcast threshold unit:1(pps),2(ratio),3(kbps)</xs:documentation>                 
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:enumeration value="1"></xs:enumeration>
+                                        <xs:enumeration value="2"></xs:enumeration>
+                                        <xs:enumeration value="3"></xs:enumeration>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="Forward" minOccurs="0" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>
+                                      Known-unitcast traffic forwarding status
+                                        Enumeration:
+                                        0(Forwarding)
+                                        1(Block)
+                                        2(Shutdown)
+                                    </xs:documentation>
+                                  </xs:annotation>
+                                  <xs:complexType>
+                                    <xs:simpleContent>
+                                      <xs:restriction base="base:UnsignedInteger32">
+                                        <xs:enumeration value="0"></xs:enumeration>
+                                        <xs:enumeration value="1"></xs:enumeration>
+                                        <xs:enumeration value="2"></xs:enumeration>
+                                      </xs:restriction>
+                                    </xs:simpleContent>
+                                  </xs:complexType>
+                                </xs:element>
+                                <xs:element name="SwitchNum" minOccurs="0" type="base:UnsignedInteger32" nillable="true" >
+                                  <xs:annotation>
+                                    <xs:documentation>Number of Known-unitcast traffic forwarding state changes</xs:documentation>                 
+                                  </xs:annotation>
+                                </xs:element>
+                              </xs:all>
+                            </xs:complexType>
+                          </xs:element>
+						  <xs:element name="IfName" minOccurs="0" type="base:InterfaceName"  nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Full name of an interface.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:all>
+                        <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
+                  <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Interval" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>Interval table</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="Interval" nillable="true" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>Traffic statistics collection interval for storm constrain on all interface, in seconds.</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:minInclusive value="1"></xs:minInclusive>
+                            <xs:maxInclusive value="300"></xs:maxInclusive>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:NodeAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="PortIsolation" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Port isolate sub module</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Groups" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>Port isolate groups table</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:choice>
+                    <xs:element name="Group" minOccurs="0" maxOccurs="unbounded">
+                      <xs:annotation>
+                        <xs:documentation>The name of Row</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="IsolatedGroupID" type="base:UnsignedInteger32" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Isolation group ID</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="InterfaceList" type="base:IfIndexRange" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Interface IfIndex list of an isolation group ID.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:all>
+                        <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
+                  <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Interfaces" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>Interfaces table</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:choice>
+                    <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                      <xs:annotation>
+                        <xs:documentation>The name of Row</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="IfIndex" type="base:NameAndIndexUnion" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Interface index.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="IsolatedGroupID" nillable="true" minOccurs="0">
+                            <xs:annotation>
+                              <xs:documentation>Port isolation group ID of an interface.</xs:documentation>
+                            </xs:annotation>
+                            <xs:complexType>
+                              <xs:simpleContent>
+                                <xs:restriction base="base:UnsignedInteger32">
+                                  <xs:minInclusive value="1"></xs:minInclusive>
+                                </xs:restriction>
+                              </xs:simpleContent>
+                            </xs:complexType>
+                          </xs:element>
+						  <xs:element name="IfName" minOccurs="0" type="base:InterfaceName"  nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Full name of an interface.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:all>
+                        <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
+                  <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+              <xs:element name="Capabilities" minOccurs="0" maxOccurs="unbounded">
+                <xs:annotation>
+                  <xs:documentation>The capability of port-isolate</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="MaxGroupNum" type="base:UnsignedInteger32" nillable="true" minOccurs="0">
+                      <xs:annotation>
+                        <xs:documentation>The maximum port isolation group number.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:NodeAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="IfHistoryTrafficStatistics" minOccurs="0">
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="TrafficStatistics" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="IfIndex" minOccurs="0" type="base:NameAndIndexUnion" nillable="true">
+                    </xs:element>
+                    <xs:element name="Interval" minOccurs="0" nillable="true" >
+                      <xs:complexType >
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:enumeration value="0"></xs:enumeration>
+                            <xs:enumeration value="1"></xs:enumeration>
+                            <xs:enumeration value="2"></xs:enumeration>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="TimeStamp" minOccurs="0" type="base:DateTime" nillable="true" >
+                    </xs:element>
+                    <xs:element name="InOctets" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                    </xs:element>
+                    <xs:element name="OutOctets" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                    </xs:element>
+					<xs:element name="IfName" minOccurs="0" type="base:InterfaceName"  nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Full name of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="AllHistoryTrafficStatistics" minOccurs="0">
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="TrafficStatistics" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="Interval" minOccurs="0" nillable="true">
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:enumeration value="0"></xs:enumeration>
+                            <xs:enumeration value="1"></xs:enumeration>
+                            <xs:enumeration value="2"></xs:enumeration>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="TimeStamp" minOccurs="0" type="base:DateTime" nillable="true">
+                    </xs:element>
+                    <xs:element name="InOctets" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                    </xs:element>
+                    <xs:element name="OutOctets" minOccurs="0" type="base:UnsignedInteger64" nillable="true">
+                    </xs:element>
+                  </xs:all>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DeviceCapabilities" minOccurs="0">
+          <xs:complexType>
+            <xs:all>
+              <xs:element name="HistoryTrafficStatistic" minOccurs="0" type="base:Boolean" nillable="true">
+              </xs:element>
+              <xs:element name="ManualNoLoopBack" minOccurs="0" type="base:Boolean" nillable="true">
+              </xs:element>
+            </xs:all>
+            <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ReserveVlanInterface" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>This table contains the reservation of VLAN interface resources.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="VlanInterface" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="Type" minOccurs="0" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>
+                          The reservation type:
+                          1 Global
+                          2 Local
+                        </xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:simpleContent>
+                          <xs:restriction base="base:UnsignedInteger32">
+                            <xs:enumeration value="1"></xs:enumeration>
+                            <xs:enumeration value="2"></xs:enumeration>
+                          </xs:restriction>
+                        </xs:simpleContent>
+                      </xs:complexType>
+                    </xs:element>
+                    <xs:element name="VlanList" minOccurs="0" nillable="true"  type="base:VlanRange" >
+                      <xs:annotation>
+                        <xs:documentation>List of vlan IDs which relative vlan interface is reserved.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="NewSubInterfaces"  minOccurs="0">
+          <xs:annotation>
+              <xs:documentation>This table is used to create or delete sub-interfaces.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="IfIndex" type="base:NameAndIndexUnion" minOccurs="0" nillable="true">
+                       <xs:annotation>
+                         <xs:documentation>Interface index as table index.</xs:documentation>
+                       </xs:annotation>
+                    </xs:element>
+                    <xs:element name="SubNum" type="base:UnsignedInteger32" minOccurs="0" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Sub-interface number.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+					<xs:element name="IfName" minOccurs="0" type="base:InterfaceName"  nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Full name of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+           <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="DataBuffer" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>Data Buffer sub module</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="IfBuffer" minOccurs="0">
+                <xs:annotation>
+                  <xs:documentation>This table contains the buffer of interface.</xs:documentation>
+                </xs:annotation>
+                <xs:complexType>
+                  <xs:choice maxOccurs="unbounded">
+                    <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                      <xs:annotation>
+                        <xs:documentation>Row name</xs:documentation>
+                      </xs:annotation>
+                      <xs:complexType>
+                        <xs:all>
+                          <xs:element name="IfIndex" minOccurs="0" type="base:NameAndIndexUnion" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Interface index</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="FreeBuf" minOccurs="0" type="base:UnsignedInteger32" nillable="true" >
+                            <xs:annotation>
+                              <xs:documentation>The number of packet buffers available for the interface.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="InitBuf" minOccurs="0"  type="base:UnsignedInteger32"  nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>The number of packet buffers allocated when the interface was created.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="MinBuf" minOccurs="0" type="base:UnsignedInteger32" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>The smallest number of packet buffers available for the interface.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                          <xs:element name="MissPkts"  minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Broadcast storm constrain information of an interface</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+						  <xs:element name="IfName" minOccurs="0" type="base:InterfaceName"  nillable="true">
+                            <xs:annotation>
+                              <xs:documentation>Full name of an interface.</xs:documentation>
+                            </xs:annotation>
+                          </xs:element>
+                        </xs:all>
+                        <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                      </xs:complexType>
+                    </xs:element>
+                  </xs:choice>
+                  <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:NodeAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+
+        <xs:element name="EthPortStatistics" minOccurs="0">
+          <xs:annotation>
+            <xs:documentation>This table contains ethernet interface statistics.</xs:documentation>
+          </xs:annotation>
+          <xs:complexType>
+            <xs:choice maxOccurs="unbounded">
+              <xs:element name="Interface" minOccurs="0" maxOccurs="unbounded">
+                <xs:complexType>
+                  <xs:all>
+                    <xs:element name="IfIndex" minOccurs="0" type="base:NameAndIndexUnion" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Interface index as table index.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Name" minOccurs="0" type="base:InterfaceName"  nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Full name of an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>                   
+                    <xs:element name="InBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InUcastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound unicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InBrdcastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound broadcast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InMulticastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound multicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InPauses" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound pause frames on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InNormalBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound normal bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InNormalUnicastBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound normal unicast bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InNormalBrdcastBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound normal broadcast bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InNormalMulticastBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound normal multicast bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InUnknownUnicastBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound unknown unicast bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InNormalPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound normal  packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InNormalUnicastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound normal unicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InNormalBrdcastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound normal broadcast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InNormalMulticastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound normal multicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InUnknownUnicastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound unknown unicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InNormalPauses" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound normal pause frames on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InErrorPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of errored inbound packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InPktSpeed" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Rate of inbound packages on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InByteSpeed" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Rate of inbound bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InBrdcastPktSpeed" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Rate of inbound broadcast packages on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InMulticastPktSpeed" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Rate of inbound multicast packages on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InRunts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound runts on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InGiants" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound giants on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InThrottles" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound frames that had a non-integer number of bytes.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InErrCRCFrames" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Total number of inbound frames that had a normal length, but contained CRC errors.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InErrFrames" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Total number of inbound frames that contained CRC errors and a non-integer number of bytes.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InOverrunDropPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of packets dropped because the input rate of the port exceeded the queuing capability.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InAbortPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Total number of illegal inbound packets.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InIgnoreDropFrames" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of inbound frames dropped because the receiving buffer of the port ran low.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InParityErrFrames" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Total number of frames with parity errors.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InSpeedPeakBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Peak rate of inbound traffic in Bps, and the time when the peak inbound traffic rate occurred.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="InSpeedPeakTime" minOccurs="0" type="base:DateTime" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Speed peak time of inbound bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound packages on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutUcastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound unicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutBrdcastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound broadcast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutMulticastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound multicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutPauses" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound pause frames on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutNormalBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound normal bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutNormalUnicastBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound normal unicast bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutNormalBrdcastBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound normal broadcast bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutNormalMulticastBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound normal multicast bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutUnknownUnicastBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound unknown unicast bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutNormalPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound normal packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutNormalUnicastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound normal unicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutNormalBrdcastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound normal broadcast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutNormalMulticastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound normal multicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutUnknownUnicastPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound unknown unicast packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutNormalPauses" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of outbound normal pause frames on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutErrorPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of error outbound packets on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutPktSpeed" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Rate of outbound packages on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutByteSpeed" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Rate of outbound bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutBrdcastPktSpeed" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Rate of outbound broadcast packages on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutMulticastPktSpeed" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Rate of outbound multicast packages on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutUnderRunDropPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of packets dropped because the output rate of the interface exceeded the output queuing capability.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutBuffFailDropPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of packets dropped because the transmitting buffer of the interface ran low.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutAbortPkts" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of packets that failed to be transmitted, for example, because of Ethernet collisions.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutDeferedFrames" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of frames that the interface deferred to transmit because of detected collisions.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutCollisionFrames" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of frames that the interface stopped transmitting because Ethernet collisions were detected during transmission.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutLateCollisionFrames" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of frames that the interface deferred to transmit after transmitting their first 512 bits because of detected collisions.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutLostCarriers" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of carrier losses during transmission.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutNoCarriers" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Number of times that the port failed to detect the carrier when attempting to send frames.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutSpeedPeakBytes" minOccurs="0"  type="base:UnsignedInteger64" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Peak rate of outbound traffic in Bps, and the time when the peak outbound traffic rate occurred.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                    <xs:element name="OutSpeedPeakTime" minOccurs="0" type="base:DateTime" nillable="true">
+                      <xs:annotation>
+                        <xs:documentation>Speed peak time of outbound bytes on an interface.</xs:documentation>
+                      </xs:annotation>
+                    </xs:element>
+                  </xs:all>
+                  <xs:attributeGroup ref="base:RowAttributeGroup"></xs:attributeGroup>
+                </xs:complexType>
+              </xs:element>
+            </xs:choice>
+            <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+          </xs:complexType>
+        </xs:element>
+        <xs:element name="ShutdownInterval" minOccurs="0" maxOccurs="300">
+            <xs:annotation>
+                <xs:documentation>This table contains shutdown recovery interval.</xs:documentation>
+            </xs:annotation>
+            <xs:complexType>
+                <xs:all>
+                    <xs:element name="Interval" nillable="true" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Recover interval for interface, in seconds.</xs:documentation>
+                        </xs:annotation>
+                        <xs:complexType>
+                            <xs:simpleContent>
+                                <xs:restriction base="base:UnsignedInteger32">
+                                    <xs:minInclusive value="0"></xs:minInclusive>
+                                    <xs:maxInclusive value="300"></xs:maxInclusive>
+                                </xs:restriction>
+                            </xs:simpleContent>
+                        </xs:complexType>
+                    </xs:element>
+                </xs:all>
+                <xs:attributeGroup ref="base:TableAttributeGroup"></xs:attributeGroup>
+            </xs:complexType>
+        </xs:element>
+      </xs:choice>
+      <xs:attributeGroup ref="base:NodeAttributeGroup"></xs:attributeGroup>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
