@@ -2,7 +2,7 @@ from pyhpecw7.comware import HPCOM7
 from pyhpecw7.features.interface import Interface
 from pyhpecw7.features.vlan import Vlan
 import logging
-logging.basicConfig(level=logging.DEBUG)
+# logging.basicConfig(level=logging.DEBUG)
 
 host = {
     'host': '192.168.56.20',
@@ -16,7 +16,7 @@ conn = HPCOM7(**host)
 conn.open()
 
 interface = Interface(conn, 'gi2/0')
-a = interface.get_interface_list()
+a = interface.get_interface_list(raw=True)
 from pprint import pprint
 print(a)
 # vlan = Vlan(conn,'150')

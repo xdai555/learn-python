@@ -113,9 +113,10 @@ conn = manager.connect(**host, hostkey_verify=False, look_for_keys=False)
 
 # 获取设备所有接口的所有信息
 ret = conn.get(('subtree', top))
-print(ret,type(ret))
-print(dir(ret))
-print(dir(ret.data_ele))
+# print(ret,type(ret))
+# print(dir(ret))
+# print(ret.data,type(ret.data))
+
 ipv4_xml="""
 <IPV4ADDRESS>
  <Ipv4Addresses>
@@ -222,12 +223,21 @@ def elem_to_dict(elem, ns, key_map, value_map):
         field = elem.find('.//{}{}'.format(ns, v))
         if field is not None:
             text = field.text
-            to_dict[k] = value_map.get(v, {}).get(text, text)
-    print(to_dict)
+            # to_dict[k] = value_map.get(v, {}).get(text, text)
+            to_dict[k] = text
+    return to_dict
+
+def elem_to_dict_raw(elem, ns):
+    to_dict = {}
+    for e in elem.getchildren():
+        to_dict[e.tag.replace(ns,'')] = e.text
+    return to_dict
+
 
 
 def data_elem_to_dict(elem, key_map, value_map={}):
     return elem_to_dict(elem, H3C_DATA_1_0_C, key_map, value_map=value_map)
+
 
 
 iface_key_map = {
@@ -237,8 +247,7 @@ iface_key_map = {
     '掩码': 'InetAddressIPV4Mask',
 }
 
-# data_elem_to_dict(ret.data_ele,iface_key_map)
-
+result = data_elem_to_dict(ret.data,iface_key_map)
 
 def find_all_in_data(elem, v):
     return _findall(elem, H3C_DATA_1_0_C, v)
@@ -248,8 +257,19 @@ def _findall(elem, ns, v):
     return elem.findall('.//{}{}'.format(ns, v))
 
 
-# ifaces = find_all_in_data(ret.data_ele,'Interface')
+ifaces = find_all_in_data(ret.data_ele,'Interface')
 # print(ifaces)
+# print(etree.tostring(ifaces[0]))
 
+# for i in ifaces[0]:
+#     print(i.tag, i.text)
+
+result = [elem_to_dict_raw(iface, H3C_DATA_1_0_C) for iface in ifaces]
+result = [data_elem_to_dict(iface,iface_key_map) for iface in ifaces]
+
+# print(result)
 import xmltodict
-dir(xmltodict)
+# print(dir(xmltodict))
+result = xmltodict.parse(etree.tostring(ifaces[0]))
+print(result)
+print(dict(result['Interface']))
