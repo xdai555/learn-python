@@ -1,0 +1,9 @@
+l2_interface:
+  - iface_name: g1/0/1
+    desc: jinja2_render_config
+    link_type: access
+    allow_vlan: 10
+  - iface_name: g1/0/2
+    desc: 
+    link_type: trunk
+    allow_vlan: 10 20 30

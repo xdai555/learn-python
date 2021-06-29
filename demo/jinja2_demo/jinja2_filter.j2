@@ -1,0 +1,3 @@
+{% for person in people %}
+My name is {{ person.name | upper() }}, and I am {{ person['age'] }} years old.
+{% endfor %}
