@@ -104,7 +104,7 @@ top = E.top(
 # print(top.tag)
 # print(etree.tostring(top))
 
-conn = manager.connect(**host, hostkey_verify=False, look_for_keys=False)
+# conn = manager.connect(**host, hostkey_verify=False, look_for_keys=False)
 # # 配置 BGP 111
 # ret = conn.edit_config(target='running',config=hello)
 # # 获取 BGP AS 号
@@ -112,7 +112,7 @@ conn = manager.connect(**host, hostkey_verify=False, look_for_keys=False)
 # print(ret,type(ret),ret.data_ele.find('.//{http://www.h3c.com/netconf/data:1.0}ASNumber').text)
 
 # 获取设备所有接口的所有信息
-ret = conn.get(('subtree', top))
+# ret = conn.get(('subtree', top))
 # print(ret,type(ret))
 # print(dir(ret))
 # print(ret.data,type(ret.data))
@@ -247,7 +247,7 @@ iface_key_map = {
     '掩码': 'InetAddressIPV4Mask',
 }
 
-result = data_elem_to_dict(ret.data,iface_key_map)
+# result = data_elem_to_dict(ret.data,iface_key_map)
 
 def find_all_in_data(elem, v):
     return _findall(elem, H3C_DATA_1_0_C, v)
@@ -257,19 +257,25 @@ def _findall(elem, ns, v):
     return elem.findall('.//{}{}'.format(ns, v))
 
 
-ifaces = find_all_in_data(ret.data_ele,'Interface')
+# ifaces = find_all_in_data(ret.data_ele,'Interface')
 # print(ifaces)
 # print(etree.tostring(ifaces[0]))
 
 # for i in ifaces[0]:
 #     print(i.tag, i.text)
 
-result = [elem_to_dict_raw(iface, H3C_DATA_1_0_C) for iface in ifaces]
-result = [data_elem_to_dict(iface,iface_key_map) for iface in ifaces]
+# result = [elem_to_dict_raw(iface, H3C_DATA_1_0_C) for iface in ifaces]
+# result = [data_elem_to_dict(iface,iface_key_map) for iface in ifaces]
 
 # print(result)
-import xmltodict
-# print(dir(xmltodict))
-result = xmltodict.parse(etree.tostring(ifaces[0]))
-print(result)
-print(dict(result['Interface']))
+# import xmltodict
+# # print(dir(xmltodict))
+# result = xmltodict.parse(etree.tostring(ifaces[0]))
+# print(result)
+# print(dict(result['Interface']))
+
+
+
+
+C_test = ElementMaker(namespace=BASE_NS_1_0, nsmap={None: BASE_NS_1_0,"xc":"urn:ietf:params:xml:ns:netconf:base:1.0"})
+print(etree.tostring(C_test))

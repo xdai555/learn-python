@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+<a href="/job_list/">返回职位列表</a>
+
+{% if job %}
+    <p>岗位名称：{{ job.job_name }}</p>
+    <p>城市：{{ job.city_name }}</p>
+    <p>岗位职责：{{ job.job_responsibility }}</p>
+    <p>描述：{{ job.job_requirement }}</p>
+
+    <p></p>
+    <input class="btn btn-primary" type="submit" value="申请职位" onclick="location.href='/resume/add/'">
+
+{% else %}
+<p>职位不存在</p>
+{% endif %}
+
+{% endblock %}

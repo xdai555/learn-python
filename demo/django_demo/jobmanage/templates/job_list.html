@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+    欢迎浏览职位信息
+
+{% if job_list %}
+<!-- ul 定义列表 -->
+    <ul>
+    {% for job in job_list %}
+        <li>{{ job.type_name }} <a href="/job/{{job.id}}/">{{job.job_name}}</a> </li>
+    {% endfor%}
+    </ul>
+
+{% else %}
+<p>没有数据。</p>
+{% endif %}
+
+{% endblock %}
