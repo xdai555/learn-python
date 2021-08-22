@@ -9,7 +9,7 @@ from nornir.core.plugins.runners import RunnersPluginRegister
 from nornir.core.plugins.register import PluginRegister
 import pkg_resources
 from nornir.core.helpers.jinja_helper import render_from_file
-
+from functools import partial
 
 
 # nr = InitNornir(
