@@ -1,6 +1,6 @@
-# 对上一节中的带参数的装饰器进行修改
 from functools import partial, wraps
 import logging
+
 
 def logged(func=None, *, level=logging.DEBUG, name=None, message=None):
     if func is None:
@@ -28,5 +28,3 @@ def logged(func=None, *, level=logging.DEBUG, name=None, message=None):
 
 # ret = add(1, 2)
 # print(ret)
-
-import nornir

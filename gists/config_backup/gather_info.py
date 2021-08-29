@@ -27,6 +27,7 @@ def get_device_list(filename):
             )
     return device_list
 
+
 class NetworkDevice(object):
     def __init__(self, ip="", username="", password="'", name="", port=22,):
         self.conn = None
@@ -40,7 +41,7 @@ class NetworkDevice(object):
         self.username = username
         self.password = password
         self._open_ssh()
-    
+
     def _open_ssh(self):
         """初始化 SSH 连接，调起一个模拟终端，会话结束前可以一直执行命令。
 
@@ -90,14 +91,15 @@ class NetworkDevice(object):
 
 
 dev = {
-    "ip":"192.168.56.21",
-    "username":"netdevops",
-    "password":"Admin@h3c.com",
+    "ip": "192.168.56.21",
+    "username": "netdevops",
+    "password": "Admin@h3c.com",
     "name": "sw1"
 }
 # sw1 = NetworkDevice(**dev)
 # ret = sw1.exec_cmd("dis version")
 # print(ret)
+
 
 def parse_interface_drop(output):
     """把设备的输出队列丢包信息解析成累加值
@@ -111,13 +113,14 @@ def parse_interface_drop(output):
         count += int(i[1])
     return count
 
+
 def run(cmd, **conn_parms):
     """登录单台设备，执行指定命令，解析丢包统计
     """
     sw = NetworkDevice(**conn_parms)
     output = sw.exec_cmd(cmd)
     drop_count = parse_interface_drop(output)
-    return "%s %s %s"%(
+    return "%s %s %s" % (
         conn_parms.get("name"),
         conn_parms.get("ip"),
         drop_count)
@@ -126,7 +129,8 @@ def run(cmd, **conn_parms):
 # ret = run(cmd,**dev)
 # print(ret)
 
-if __name__== "__main__":
+
+if __name__ == "__main__":
     """获取设备列表，使用多线程登录设备获取信息并返回
     """
     with ThreadPoolExecutor(10) as pool:
@@ -138,6 +142,6 @@ if __name__== "__main__":
             futures.append(future)
         # for f in futures:
         #     print(f.result())
-    with open("./drops/%s.log"%time.strftime("%Y%m%d_%H"),'w') as f:
-         for line in futures:
+    with open("./drops/%s.log" % time.strftime("%Y%m%d_%H"), 'w') as f:
+        for line in futures:
             f.write(line.result() + "\n")
