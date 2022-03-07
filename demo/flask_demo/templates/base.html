@@ -1,4 +1,9 @@
 {% extends "bootstrap/base.html" %}
+{% block script %}
+{{ super() }}
+<!-- 继承父模板的脚本，引入 moment.js -->
+{{ moment.include_moment() }}
+{% endblock %}
 
 {% block title %}Hello Xdai{% endblock %}
 
