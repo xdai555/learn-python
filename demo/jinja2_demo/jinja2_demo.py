@@ -13,7 +13,7 @@ env = Environment(loader=j2_loader)
 # j2_tmpl = env.get_template('./jinja2_for.j2')
 # j2_tmpl = env.get_template('./jinja2_if.j2')
 # j2_tmpl = env.get_template('./jinja2_filter.j2')
-j2_tmpl = env.get_template('./l2_switch.j2')
+j2_tmpl = env.get_template('./range_test.j2')
 
 names = ['Zhang San', 'Li Si', 'Wang Wu']
 
@@ -28,9 +28,9 @@ people = [
 
 
 
-import yaml
-with open('l2_interfaces.yaml') as f:
-    vars = yaml.safe_load(f.read())
-print(vars)
-result = j2_tmpl.render(vars)
+# import yaml
+# with open('l2_interfaces.yaml') as f:
+#     vars = yaml.safe_load(f.read())
+# print(vars)
+result = j2_tmpl.render()
 print(result)
