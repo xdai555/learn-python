@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Ajax Test</title>
+    <!-- 从公网引入 jquery -->
+    <script src="http://libs.baidu.com/jquery/2.0.0/jquery.min.js"></script>
+</head>
+<body>
+<input type="text" id="user">
+<button type="submit" onclick="getTable1()">提交</button>
+<p id="userinfo"></p>
+</body>
+</html>
+
+
+<script>
+    function getTable1(){
+        if ($("#user").val() == ""){
+            $("#userinfo").text("内容不能为空！")
+        }else{
+            // $.ajax 接收一个参数，包含当前请求的所有配置
+            $.ajax({
+                url: './getUserInfo/' + $("#user").val(), // 必填，请求的地址
+                type: 'GET', // 选填，请求方式，默认是 GET（忽略大小写）
+                data: {}, // 选填，发送P请求是携带的参数
+                dataType: 'json', // 选填，期望返回值的数据类型，默认是 string
+                async: true, // 选填，是否异步，默认是 true
+                success: function(data){
+                    //$("#userinfo").text(JSON.stringify(data))
+                    //console.log(data["data"])
+                    for (var key in data.data){
+                        $("#userinfo").append('<tr><th>'+key+'</th><td>'+data.data[key]+'</td></tr>')
+                    }
+                }, // 选填，成功的回调函数
+                error: function(){$("#userinfo").text("获取信息失败")}, // 选填，失败的回调函数
+                cache: true, // 选填，是否缓存，默认是 true
+                context: "", // 选填，回调函数中的 this 指向，默认是 ajax 对象
+                status: {}, // 选填，根据对应的状态码进行函数执行
+                timeout: 1000, // 选填，超时事件
+            })
+        }
+
+    }
+</script>
