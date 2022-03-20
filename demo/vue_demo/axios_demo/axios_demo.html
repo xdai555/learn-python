@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root">
+        Address:
+        {{  info.address }}
+        <a :href="info.url">{{info.name}}</a>
+    </div>
+</body>
+
+<script type="text/javascript">
+    const vm = new Vue({
+        el: '#root',
+        // 定义一个 info 属性，让前台可以调用
+        data: {info: ''},
+        // mounted 是 vue 生命周期中的其中一步（类比：django 请求的生命周期中可以用中间件做点事情）
+        mounted(){
+            // 请求内容，赋值给 vue 对象中的 info 属性，把原来的空字符替换为实际的值
+            axios.get("./data.json").then(res=>(this.info=res.data))
+        }
+    })
+
+</script>
+
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <style>
+        *{
+            margin: 10px;
+        }
+        .box1{
+            background-color: red;
+            padding: 5px;
+        }
+        .box2{
+            background-color: rgb(0, 255, 106);
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+<div id="root">
+    <h2>Hello, {{ name }}</h2>
+    常用的几个事件修饰符：<br>
+    prevent: 阻止默认事件<br>
+    <a href="http://www.baidu.com" @click.prevent="showInfo" >阻止默认跳转行为就属于事件修饰符，正常情况下a会跳转</a><br>
+    <hr>
+    事件捕获是从外到内，事件冒泡是从里到外<br>
+    <div class="box1" id="id1" @click="showInfo">
+        <div class="box2" id="id2" @click.stop="showInfo">
+            stop: 阻止事件冒泡；<br>
+            点击红色部分，只执行外层事件；点击绿色部分执行内层和外层事件。
+            添加 stop 属性后只执行内层事件。
+        </div>
+    </div>
+    <hr>
+    once: 事件只触发一次
+    capture: 使用事件的捕获模式
+    self: 只有 event.target 是当前操作的元素时才出发事件
+    passive: 事件的默认行为立即执行，不必等回调事件<br>
+    修饰符可以连续写，执行顺序从左到右，例如: @click.prevent.stop
+    <div>
+        <input type="text"  @keyup.a="showInfo">监听键盘事件
+    </div>
+</div> 
+
+
+
+</body>
+
+<script>
+const vm = new Vue({
+    el: "#root",
+    data: {
+        name: "test"
+    },
+    methods: {
+        showInfo(){
+            alert("hello")
+        }
+    }
+
+})
+
+
+
+</script>
+</html>

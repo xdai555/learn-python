@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root">
+        <h2>Hello， {{ name }}</h2>
+        <button v-on:click="showInfo1">点击提示 不传参</button>
+        <!-- v-on 可简写为 @ -->
+        <button @click="showInfo2($event, 'test')">点击提示 传参</button>
+        <br>
+        <select v-model="selected">
+            <option value='' disabled>请选择</option>
+            <option>chrome</option>
+            <option>edge</option>
+            <option>IE</option>
+        </select>
+        <p>你选择了 {{ selected }}</p>
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.config.productionTip = false
+
+    const vm = new Vue({
+        el: '#root',
+        data: {
+            name: 'test',
+            selected: ''
+        },
+        methods:{
+            showInfo1(event){
+                alert("hello")
+                console.log(event)
+            },
+            showInfo2(event, info){
+                alert("hello " + info)
+            },
+        }
+
+    })
+
+</script>
+
+</html>

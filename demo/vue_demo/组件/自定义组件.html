@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script type="text/javascript" src="../js/vue.js"></script>
+    <title>Document</title>
+</head>
+
+<body>
+    <div id="root">
+        <!-- v-bind 的值 i_for 是和 v-for 循环体里面 i_for 一致的 -->
+        <!-- v-bind 绑定的对象 item 要和自定义的模板里面的参数一致-->
+        <my-component v-for="browser in items" :item="browser"></my-component>
+    </div>
+</body>
+
+<script type="text/javascript">
+    Vue.component("my-component",{
+        props: ["item"],
+        template: "<li>{{ item }}</li>"
+    })
+    const vm = new Vue({
+        el: '#root',
+        data: {
+            items: ["Chrome", "Edge", "IE"]
+        }
+    })
+
+</script>
+
+</html>
