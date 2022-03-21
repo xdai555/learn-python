@@ -84,6 +84,7 @@
 </template>
 
 <script>
+// 对外暴露接口，接口里面的变量在自己的作用域里面有效
 export default {
   name: 'HelloWorld',
   data () {
