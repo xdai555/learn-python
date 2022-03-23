@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import HelloWorld from '@/components/HelloWorld'
 import myHello from '@/components/hello'
 import NotFound from '@/components/NotFound'
+import Index from '@/components/Index'
 
 Vue.use(Router)
 
@@ -22,6 +23,10 @@ export default new Router({
     {
       path: '/goHome',
       redirect: '/'
+    },
+    {
+      path: '/index',
+      component: Index
     },
     {
       path: '*',

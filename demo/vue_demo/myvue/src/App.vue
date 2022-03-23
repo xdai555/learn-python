@@ -1,6 +1,5 @@
 <template>
   <div id="app">
-    <img src="./assets/logo.png">
     <router-view/>
   </div>
 </template>
@@ -8,6 +7,7 @@
 <script>
 import HelloWorld from './components/HelloWorld.vue'
 import myHello from './components/hello.vue'
+import Index from './components/Index.vue'
 
 /*
 添加组件的流程：
@@ -23,11 +23,12 @@ main.js 和 index.html 一般情况下是不用做改动的。
  */
 
 export default {
-  components: { HelloWorld, myHello },
+  components: { HelloWorld, myHello, Index },
   name: 'App'
 }
 </script>
 
+<!--
 <style>
 #app {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
@@ -38,3 +39,4 @@ export default {
   margin-top: 60px;
 }
 </style>
+-->
