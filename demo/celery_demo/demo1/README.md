@@ -14,4 +14,4 @@
    
    运行之后，可以在 celery 进程中看到 worker 已经接受了一系列 task 并开始了处理，一般在运行任务时打印出任务 ID。
 
-3. 运行结果可以通过 fetch_result.py 根据任务 ID 来获取。
+3. 运行结果可以通过 fetch_result.py 根据任务 ID 来获取。  

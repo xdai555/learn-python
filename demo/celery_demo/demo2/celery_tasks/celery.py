@@ -32,4 +32,4 @@ cel.conf.beat_schedule = {
 }
 
 # 启动定时任务，将任务周期性地添加到 worker 队列中执行
-
+# celery -A celery_tasks  beat -l info
