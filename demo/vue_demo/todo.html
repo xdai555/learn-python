@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToDo List</title>
+  <script src="./js/vue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    hello {{ name }}
+    <div>
+      <input type="text" v-model="info">
+      <button @click="handleClick">添加</button>
+    </div>
+    <ul>
+      <li v-for="item in list"> {{ item }}</li>
+    </ul>
+    <!-- for 循环里面的 item 是为了给 v-bind 绑定的参数 param 进行赋值 -->
+    <todo-item v-for="item in list" :param="item"></todo-item>
+  </div>
+
+  <script>
+    // 在 Vue 的实例里面三个 param 是互相对应的
+    Vue.component("todo-item", {
+      props: ['param'],
+      template: '<li>{{ param }}</li>'
+    })
+
+    new Vue({
+      el: "#app",
+      data() {
+        return {
+          name: "test",
+          info: '',
+          list: []
+        }
+      },
+      methods: {
+        handleClick() {
+          console.log(this.info)
+          this.list.push(this.info)
+          this.info = ''
+        }
+      }
+    })
+  </script>
+
+</body>
+
+</html>

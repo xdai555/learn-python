@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TextFSM 在线解析 | xdai.vip</title>
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/vue@2.6.14/dist/vue.js"></script>
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+</head>
+
+<body>
+  <div id="app">
+    <el-container>
+      <el-header>
+        <h1>TextFSM 在线解析</h1>
+      </el-header>
+      <el-main>
+    <el-row>
+      <el-col :span="8">
+        <div class="grid-content" style="margin: 3px">
+          <el-input type="textarea" placeholder="请输入原始 CLI 内容" v-model="raw_text" @change="textFSMParser"></el-input>
+      </div>
+      </el-col>
+      <el-col :span="8">
+        <div class="grid-content" style="margin: 3px">
+          <el-input type="textarea" placeholder="请输入 TextFsm 模板" v-model="template_text"
+          @change="textFSMParser()"></el-input>
+      </div>
+      </el-col>
+      <el-col :span="8">
+        <div class="grid-content" style="margin: 3px">
+          <el-input type="textarea" placeholder="尚未匹配到结果" :value="result" ></el-input>
+      </div>
+      </el-col>
+
+    </el-row>
+  </el-main>
+</el-container>
+
+  </div>
+
+  <script>
+    const vm = new Vue({
+      el: "#app",
+      data (){
+        return {
+          raw_text: '',
+          template_text: '',
+          result: ''
+        }
+      },
+      methods: {
+        textFSMParser () {
+          axios.get("./data.json").then(res=>(this.result=JSON.stringify(res.data)))
+        }
+      }
+    })
+  </script>
+</body>
+</html>

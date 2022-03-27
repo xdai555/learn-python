@@ -4,6 +4,7 @@ import HelloWorld from '@/components/HelloWorld'
 import myHello from '@/components/hello'
 import NotFound from '@/components/NotFound'
 import Index from '@/components/Index'
+import TodoList from '@/components/TodoList'
 
 Vue.use(Router)
 
@@ -11,7 +12,7 @@ Vue.use(Router)
 export default new Router({
   routes: [
     {
-      path: '/',
+      path: '/hello-world',
       name: 'HelloWorld',
       component: HelloWorld
     },
@@ -25,8 +26,12 @@ export default new Router({
       redirect: '/'
     },
     {
-      path: '/index',
+      path: '/',
       component: Index
+    },
+    {
+      path: '/todo',
+      component: TodoList
     },
     {
       path: '*',

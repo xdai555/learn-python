@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <router-view/>
+    <router-view></router-view>
   </div>
 </template>
 
@@ -8,6 +8,7 @@
 import HelloWorld from './components/HelloWorld.vue'
 import myHello from './components/hello.vue'
 import Index from './components/Index.vue'
+import TodoList from './components/TodoList'
 
 /*
 添加组件的流程：
@@ -23,7 +24,7 @@ main.js 和 index.html 一般情况下是不用做改动的。
  */
 
 export default {
-  components: { HelloWorld, myHello, Index },
+  components: { HelloWorld, myHello, Index, TodoList },
   name: 'App'
 }
 </script>
