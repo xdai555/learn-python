@@ -5,6 +5,7 @@ import myHello from '@/components/hello'
 import NotFound from '@/components/NotFound'
 import Index from '@/components/Index'
 import TodoList from '@/components/TodoList'
+import TextFSMOnline from '@/components/TextFSMOnline'
 
 Vue.use(Router)
 
@@ -33,6 +34,7 @@ export default new Router({
       path: '/todo',
       component: TodoList
     },
+    { path: '/textfsm', component: TextFSMOnline },
     {
       path: '*',
       component: NotFound
