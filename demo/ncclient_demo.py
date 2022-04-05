@@ -88,6 +88,11 @@ host = {
 
 }
 
+
+# 加载多个命名空间
+# 参数 nsmap = { None:v, k1:v1 ,k2:v2 } 出来的结果就是   <xmlns:"v"  xmlns:k1="v1" xmlns:k2="v2" > ，Key 是 None 的话，就是全局的 xmlns:v
+C = ElementMaker(namespace=BASE_NS_1_0, nsmap={None: BASE_NS_1_0,"xc":"urn:ietf:params:xml:ns:netconf:base:1.0"})
+
 E = ElementMaker(namespace=H3C_DATA_1_0, nsmap={None: H3C_DATA_1_0})
 top = E.top(
     E.Ifmgr(
