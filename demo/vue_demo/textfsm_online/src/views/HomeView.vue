@@ -1,5 +1,42 @@
 <template>
 <el-container v-bind:class="{ darkMode: isDark}">
+  <div style="padding-top: 15px;text-align:center;">
+  <span>加载已有模板：</span>
+  <el-select
+    style="width:15%;"
+    v-model="platform_value"
+    filterable placeholder="选择 Platform"
+    size="small"
+    >
+    <el-option
+      v-for="item in platform_options"
+      :key="item"
+      :label="item"
+      :value="item"
+    >
+    </el-option>
+  </el-select>
+  <el-select style="width:20%;"
+   v-model="template_value"
+    filterable placeholder="选择 TextFSM 模板"
+    @focus="getTemplateList()"
+    no-data-text="请先选择 Platform"
+    size="small"
+    >
+    <el-option
+      v-for="item in template_options"
+      :key="item"
+      :label="item"
+      :value="item"
+    >
+    </el-option>
+  </el-select>
+  <el-button id="loadTemplate"
+    type="info" plain
+    size="small"
+    @click="loadTemplate()" icon="el-icon-plus
+"></el-button>
+  </div>
 <el-main>
  <el-col :span="8">
     <div class="grid-content">
@@ -49,6 +86,7 @@ import 'codemirror/mode/javascript/javascript'
 import 'codemirror/addon/display/placeholder.js'
 import 'codemirror/theme/idea.css'
 import 'codemirror/theme/darcula.css'
+// import FilterableSelect from '../components/FilterableSelect.vue'
 
 export default {
   data () {
@@ -62,11 +100,17 @@ export default {
         mode: 'javascript',
         lineNumbers: true,
         line: true
-      }
+      },
+      platform_options: [],
+      platform_value: '',
+      template_options: [],
+      template_value: ''
     }
   },
+  created () { this.getPlatformList() },
   methods: {
     textFSMParser () {
+      // 这里上线的时候需要改一下，防止跨域问题
       axios.post('/parser', {
         raw_text: this.raw_text,
         template_text: this.template_text
@@ -76,6 +120,43 @@ export default {
         })
         .catch(error => {
           this.result = this.jsonFormat(JSON.stringify(error))
+        })
+    },
+    getPlatformList () {
+      axios.get('/parser/getPlatformList')
+        .then(response => {
+          this.platform_options = response.data.data.platform_list
+        })
+        .catch((error) => {
+          console.log('Loding platform failed: ', error)
+        })
+    },
+    getTemplateList () {
+      const platform = this.platform_value
+      axios.get('/parser/getTemplateList', {
+        params: {
+          platform: platform
+        }
+      })
+        .then(response => {
+          this.template_options = response.data.data.template_list
+        })
+        .catch((error) => {
+          console.log('Loding template failed: ', error)
+        })
+    },
+    loadTemplate () {
+      const template = this.template_value
+      axios.get('/parser/loadTemplate', {
+        params: {
+          template: template
+        }
+      })
+        .then(response => {
+          this.template_text = response.data.data.content
+        })
+        .catch((error) => {
+          console.log('Loding template failed: ', error)
         })
     },
     jsonFormat (jsonStr) {
@@ -88,6 +169,9 @@ export default {
         this.cmOptions.theme = 'darcula'
       } else { this.cmOptions.theme = 'idea' }
     }
+  },
+  components: {
+    // 'filter-select': FilterableSelect
   }
 }
 </script>
@@ -101,6 +185,15 @@ export default {
   }
   .darkMode a {
       color: #999;
+  }
+  .darkMode span {
+      color: #999;
+  }
+  .darkMode .el-select .el-input__inner {
+      background-color: #1e1e1e;
+  }
+  .darkMode .el-button {
+      background-color: #1e1e1e !important;
   }
   a {
     color: #1e1e1e;
@@ -139,5 +232,8 @@ export default {
   }
   .CodeMirror-scroll {
     height: 100%;
+  }
+  .el-select{
+    margin-right: 15px;
   }
 </style>
