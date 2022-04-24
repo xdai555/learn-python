@@ -16,7 +16,7 @@ logging.basicConfig(
     format="%(asctime)s %(filename)s[line:%(lineno)d ] %(levelname)s %(message)s",  # 时间 文件名 line:行号  levelname logn内容
     datefmt="%d %b %Y,%a %H:%M:%S",  # 日 月 年 ，星期 时 分 秒
     filename=parent_path + "/log/gunicorn_access.log",
-    filemode="w",
+    filemode="a+",
 )
 
 
