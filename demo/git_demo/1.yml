@@ -1,0 +1,58 @@
+---
+username: oxidized    # 单台设备时以此为准
+password: S3cr3tx     # 单台设备时以此为准
+model: junos          # 单台设备时以此为准
+interval: 3600        # 配置备份的间隔时间
+log: ~/.config/oxidized/log   # 日志文件
+debug: false
+threads: 30   # 线程
+timeout: 20   # 超时时间
+retries: 3    # 失败重试次数
+prompt: !ruby/regexp /^([\w.@-]+[#>]\s?)$/    # 登录设备后的提示符判断
+crash:
+  directory: ~/.config/oxidized/crashes
+  hostnames: false
+rest: 0.0.0.0:8888    # 前端界面
+pid: ~/.config/oxidized/oxidized.pid
+input:    # 连接方式
+  default: ssh, telnet
+  debug: false
+  ssh:
+    secure: false
+output:
+  default: git      # 以git方式存储
+  git:
+      user: Oxidized
+      email: oxidized@example.com
+      repo: "~/.config/oxidized/oxidized.git"
+source:
+  default: csv
+  csv:
+    file: ~/.config/oxidized/router.db  # CSV 格式的主机数据库
+    delimiter: !ruby/regexp /:/
+    map:
+      name: 0     # CSV 里面的值映射关系
+      ip: 1
+      model: 2
+      username: 3
+      password: 4
+      group: 5
+    vars_map:
+      enable: 6
+groups:             # 为每个组进行单独的配置
+  mikrotik:
+    username: admin
+    password: blank
+  ubiquiti:
+    username: ubnt
+    password: ubnt
+model_map:            # 为每种设备类型进行单独的配置
+  cisco: ios
+    username: admin
+    password: password
+  juniper: junos
+  ironware:
+    username: admin
+    password: password
+    vars:
+      enable: enablepassword

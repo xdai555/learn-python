@@ -1,6 +1,6 @@
 <template>
-<el-container v-bind:class="{ darkMode: isDark}">
-  <div style="padding-top: 15px;text-align:center;">
+<el-container :class="{ darkMode: isDark}">
+  <div style="padding-top: 15px;text-align:center;display: inline;">
   <span>加载已有模板：</span>
   <el-select
     style="width:15%;"
@@ -34,45 +34,30 @@
   <el-button id="loadTemplate"
     type="info" plain
     size="small"
-    @click="loadTemplate()" icon="el-icon-plus
-"></el-button>
-  </div>
+    @click="loadTemplate()" icon="el-icon-plus"></el-button>
+<div style="display: inline;float: right;margin-right: 20px;">
+  <el-input-number v-model="fontSize" :min="12" :max="50" size="small"></el-input-number>
+</div>
+</div>
 <el-main>
- <el-col :span="8">
-    <div class="grid-content">
-   <codemirror v-model="raw_text"
-    placeholder="请输入原始 CLI 内容"
-    :options="cmOptions"
-    @input="textFSMParser()"/>
+ <el-col :span="8" id="box1">
+    <div class="grid-content" :style="{ fontSize: fontSize + 'px' }">
+      <codemirror v-model="raw_text" placeholder="请输入原始 CLI 内容" :options="cmOptions" @input="textFSMParser()"/>
     </div>
   </el-col>
-  <el-col :span="8">
-    <div class="grid-content">
-  <codemirror v-model="template_text"
-    placeholder="请输入 TextFSM 模板内容"
-    :options="cmOptions"
-    @input="textFSMParser()"
-  />
+  <el-col :span="8" id="box2">
+    <div class="grid-content" :style="{ fontSize: fontSize + 'px' }">
+      <codemirror v-model="template_text" placeholder="请输入 TextFSM 模板内容" :options="cmOptions" @input="textFSMParser()"/>
     </div>
   </el-col>
-  <el-col :span="8">
+  <el-col :span="8" id="box3">
     <div class="grid-content">
-  <codemirror
-    placeholder="尚未匹配到结果..."
-    :value="result"
-    :options="cmOptions"
-  />
+      <codemirror :style="{ fontSize: fontSize + 'px' }" placeholder="尚未匹配到结果..." :value="result" :options="cmOptions"/>
     </div>
   </el-col>
 </el-main>
 <el-footer>
-  <el-switch style="padding:0 10px 0 10px;"
-    active-color="#999"
-    inactive-color="#1e1e1e"
-    v-model="isDark"
-    @change="changeTheme"
-    >
-  </el-switch>
+  <el-switch style="padding:0 10px 0 10px;" active-color="#999" inactive-color="#1e1e1e" v-model="isDark" @change="changeTheme"></el-switch>
   <a href="https://beian.miit.gov.cn/" target="_blank">京ICP备2022010024号</a>
   <a href="https://github.com/xdai555/" target="_blank">@xdai555</a>
 </el-footer>
@@ -91,6 +76,7 @@ import 'codemirror/theme/darcula.css'
 export default {
   data () {
     return {
+      fontSize: 14,
       raw_text: '',
       template_text: '',
       result: '',
@@ -225,7 +211,6 @@ export default {
       border-radius: 10px;
       padding: 5px;
       height: 100%; /* viewport height */
-      font-size: 14px;
   }
   .vue-codemirror {
     height: 100%;
