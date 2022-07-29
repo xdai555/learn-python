@@ -1,0 +1,50 @@
+<vars>
+acl = {
+  "permit": [],
+  "deny": [],
+}
+</vars>
+
+<g name="interfaces.{{ vrf }}.{{ ip }}">
+interface BDI{{ id }}
+ vrf forwarding {{ vrf }}
+ ip address {{ ip }} {{ ignore }}
+</g>
+
+<g name="ipsec.{{ map_name }}**">
+crypto map {{ ignore }} local-address {{ ignore }}
+<g name="{{ id }}**">
+crypto map {{ map_name }} {{ id }} ipsec-isakmp 
+ ! Incomplete {{ is_complete | set(0) }}
+ description {{ description | ORPHRASE }}
+ set peer {{ peer_ip }}
+ set security-association lifetime seconds {{ lifetime }}
+ set transform-set {{ tf_set }} 
+ set isakmp-profile {{ isa_profile }}
+ match address {{ acl }}
+</g>
+</g>
+
+<g name="isakmp.keyring.{{ name }}">
+crypto keyring {{ name }}  
+  pre-shared-key address {{ remote_ip }} key {{ key }}
+</g>
+
+<g name="isakmp.profile.{{ name }}">
+crypto isakmp profile {{ name }}
+   vrf {{ vrf }}
+   keyring {{ keyring }}
+   match identity address {{ identity_addr }} {{ ignore }} 
+</g>
+
+<g name="acl.{{ name }}" default="acl">
+ip access-list extended {{ name }}
+ permit {{ permit | ORPHRASE | joinmatches | split('\n') }}
+ deny {{ deny | ORPHRASE | joinmatches | split('\n') }}
+</g>
+
+<g name="route.{{ vrf }}">
+<g name="global">
+ip route vrf {{ vrf }} {{ dest }} {{ mask }} {{ next_hop }} global
+</g>
+</g>
