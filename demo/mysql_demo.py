@@ -26,7 +26,7 @@ class DBManage:
             db_user = self.info['db_user']
             db_host = self.info['db_host']
             db_port = int(self.info['db_port'])
-            db_name = self.info['db_name']
+            db_name = self.db_name
             db_pwd = self.info['db_password']
 
             self.conn = pymysql.connect(
